@@ -1,0 +1,45 @@
+* {
+  -webkit-user-select: none;
+  -ms-touch-action: none;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+section {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: 140px;
+  width: 140px;
+  margin-left: -70px;
+  margin-top: -70px;
+  background: blue;
+}
+
+#results {
+  position: fixed;
+  overflow: hidden;
+  top: 0;
+  padding: 1rem;
+  background-color: rgba(255,255,255, 0.5);
+}
+
+#results .label {
+  width: 6rem;
+  text-align: right;
+  padding-right: 0.5rem;
+  display: inline-block;
+}
+#results .value {
+  display: inline-block;
+}
+.result {
+  display: block;
+  width: 9rem;
+}
+.highlight {
+  background-color: rgba(251, 250, 88, 0.78);
+}
