@@ -7,7 +7,7 @@ cameraEl.addEventListener('play', () => {
   offscreenCanvasEl.width = cameraEl.videoWidth;
   offscreenCanvasEl.height = cameraEl.videoHeight;
   canvasEl.width = cameraEl.videoWidth;
-  canvasEl.height = cameraEl.videoWidth;
+  canvasEl.height = cameraEl.videoHeight;
 
   // Grab the first frame from the camera now that the stream has started
   window.requestAnimationFrame(renderFrame);  

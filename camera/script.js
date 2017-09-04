@@ -38,26 +38,24 @@ function captureToCanvas() {
 // Reports outcome of trying to get the camera ready
 function cameraReady(err) {
   if (err) {
-    console.log("Camera not ready: " + err);
+    console.log('Camera not ready: ' + err);
     return;
   }
-  console.log("Camera ready");
 }
 
 // Tries to get the camera ready, and begins streaming video to the cameraEl element.
 function startCamera() {
   navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
   if (!navigator.getUserMedia) {
-    cameraReady("getUserMedia not supported");
+    cameraReady('getUserMedia not supported');
     return;
   }
   navigator.getUserMedia({video:true}, 
     (stream) => {
-      console.log(this);
-    cameraEl.src = window.URL.createObjectURL(stream);
-    cameraReady();
-  },
-  (error) => {
-    cameraNotReady(error);
-  });
+      cameraEl.src = window.URL.createObjectURL(stream);
+      cameraReady();
+    },
+    (error) => {
+      cameraReady(error);
+    });
 }

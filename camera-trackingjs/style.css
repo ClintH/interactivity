@@ -1,0 +1,20 @@
+* {
+  -webkit-user-select: none;
+  -ms-touch-action: none;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.colour {
+  position: absolute;
+  padding: 0.5rem;
+}

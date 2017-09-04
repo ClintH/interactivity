@@ -4,4 +4,3 @@ Demo shows how to stream video from a camera to a VIDEO element, as well as grab
 
 See more:
 * [Taking still photos with WebRTC](https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API/Taking_still_photos)
-
