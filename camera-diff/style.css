@@ -1,0 +1,14 @@
+* {
+  -webkit-user-select: none;
+  -ms-touch-action: none;
+}
+
+html,
+body {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: darkslategray;
+}
+
