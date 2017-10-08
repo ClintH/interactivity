@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" /> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>servo-feedback</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div id="servoControls">
+        <button id="posBtn">+</button>
+        <button id="negBtn">-</button>
+      </div>
+    
+    <div id="servo">
+        <div class="whisker"></div>
+    </div>
+
+    <div id="msg">...</div>
+    <script type="module" src="reconnecting-websocket.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

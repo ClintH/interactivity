@@ -1,0 +1,47 @@
+# ws-serial-bridge
+
+This demonstrates bidirectional communication between an Arduino sketch and Javascript running in the browser.
+
+# Architecture
+
+The demo consists of three bits: an Arduino sketch, a Node.js app, and a web app.
+
+* The Arduino sketch sends/receives via serial
+* A Node.js app connects to the computer's serial port and acts as a webserver with websockets. When serial data is received from the Arduino, it broadcasts it to all clients connected via websockets. When data is received on the websocket, it sends it to the Arduino
+* The web app has two demos: one is just for sending/receiving serial, the other demos working with the analog feedback servo
+
+# Setup and running
+
+1. Run the following:
+
+```npm install``
+
+2. Upload the Arduino sketch
+3. Open the serial monitor and ensure that you're getting occasional data from the Arduino. Once satisfied, close the monitor so the port is available again
+4. Start the Nodejs sketch: ``node app``. Since you didn't specify which serial port represents the Arduino, you'll get a list of ports displayed. Once you identify the right port, run it again with the port, eg ``node app com5``. Note that the port name is the often the same that shows up in the Arduino IDE too.
+5. Once started, you'll see the same periodic data showing up in the terminal
+6. In your browser, open up http://localhost:4000. This will allow you to send commands to the Nodejs server, which in turn forwards it to the Arduino. Likewise, messages sent by the Arduino are displayed in the web page.
+
+Hack away! Try making a simple command system so that a particular function runs on the Arduino when a certain command is sent from the browser, or making something happen in the browser based on a command sent from the Arduino.
+
+# Serial commands
+
+The Arduino sketch sends and receives commands in a simple string format:
+
+  <Text,Int,Float>
+
+Eg:
+  <Hello,1,10.5>
+
+Commas , are used to separate each of the three parts, and the whole thing is enclosed in angled brackets < >.
+
+This simple format means you can easily test using Arduino's serial monitor, or send commands from Javascript code.
+
+More on:
+* [WebSockets](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_client_applications)
+
+Bundles:
+* [reconnecting-websocket](https://github.com/pladaria/reconnecting-websocket) wrapper (v3.2.2)
+
+Credits:
+* Arduino serial I/O: http://forum.arduino.cc/index.php?topic=396450

@@ -1,0 +1,41 @@
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+body {
+  background-color: whitesmoke;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+}
+h1 {
+  color: darkred;
+}
+a, a:link, a:visited {
+  color: darkred;
+}
+a:hover {
+  color: black;
+}
+
+#servo {
+  background: #D4FF00;
+  width: 6rem;
+  height: 6rem;
+  border: 10px solid #D4FF00;
+  margin-left:auto;
+  margin-right:auto;
+  transition: transform 150ms ease-in-out;
+}
+
+.whisker {
+  background: white;
+  width: 10px;
+  height: 2rem;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+#servoControls {
+  zoom: 200%;
+}
