@@ -73,7 +73,7 @@ if (portArg.length == 0) {
 }
 
 var parser = new SerialPort.parsers.Readline;
-var port = new SerialPort(portArg, function (err) {
+var port = new SerialPort(portArg, {baudRate:115200}, function (err) {
   if (err) {
       console.log('Could not open port.\n ', err.message);
       process.exit();
