@@ -1,0 +1,17 @@
+{
+  "name": "ble-firmata",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ble-serial": "git+https://github.com/ClintH/ble-serial.git#peripheral-filter",
+    "firmata": "^0.17.0",
+    "johnny-five": "^0.11.7"
+  }
+}
