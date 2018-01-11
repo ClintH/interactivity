@@ -1,0 +1,30 @@
+html {
+  box-sizing: border-box;
+}
+html, body {
+  height: 100%;
+  padding: 0; margin: 0;
+  overflow: hidden;
+}
+
+body {
+  padding: 1rem;
+  background-color: #f3efb1;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+.pointer {
+  background-color: #69d3c4;
+  position: absolute;
+  width: 25vw;
+  height: 25vw;
+  border-radius: 50%;
+  opacity: 1.0; 
+}
+
+.down {
+  background-color:  #4c9d92;
+}

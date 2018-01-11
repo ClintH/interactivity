@@ -1,0 +1,16 @@
+{
+  "short_name": "Interactivity",
+  "name": "Interactivity Demo",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "index.html",
+  "display": "fullscreen",
+  "orientation": "portrait",
+  "background_color": "#8e4454",
+  "theme_color": "#8e4454"
+}
