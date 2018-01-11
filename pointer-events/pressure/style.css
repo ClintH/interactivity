@@ -1,0 +1,27 @@
+html {
+  box-sizing: border-box;
+}
+html, body {
+  height: 100%;
+  padding: 0; margin: 0;
+  overflow: hidden;
+}
+
+body {
+  padding: 1rem;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+#target {
+  background-color: whitesmoke;
+  width: 50vw;
+  height: 50vw;
+  border: 3px solid black;
+  margin: auto;
+  padding: 2rem;
+  color: white;
+  font-size: 200%;
+}
