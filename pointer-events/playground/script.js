@@ -12,7 +12,7 @@ function onDocumentReady() {
 function log(evt) {
   // Log raw event
   console.log(evt);
-  
+
   // Grab some interesting properties to show
   let someProperties = [
     'pointerType', 'type', 'pointerId',
@@ -24,7 +24,7 @@ function log(evt) {
   // Copy proeprties
   let t = "<span>";
   someProperties.forEach(prop=> {
-    t += prop + ": " + evt[prop] + "; "
+    t += prop + ": " + evt[prop] + "; ";
   });
   t += "</span>";
 
