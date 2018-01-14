@@ -10,12 +10,12 @@ function onDocumentReady() {
 
 function onPointerUp(evt) {
   let el = getOrCreate(evt);
-  el.classList.remove("down");
+  el.classList.remove('down');
 }
 
 function onPointerDown(evt) {
   let el = getOrCreate(evt);
-  el.classList.add("down");
+  el.classList.add('down');
 }
 
 function onPointerLeave(evt) {
@@ -28,8 +28,8 @@ function onPointerMove(evt) {
 
   // Position the element from its middle
   let rect = el.getBoundingClientRect();
-  el.style.left = (evt.clientX-rect.width/2) + "px";
-  el.style.top = (evt.clientY-rect.height/2) + "px";
+  el.style.left = (evt.clientX-rect.width/2) + 'px';
+  el.style.top = (evt.clientY-rect.height/2) + 'px';
 }
 
 // Returns an existing element for a pointer id, or makes a new one

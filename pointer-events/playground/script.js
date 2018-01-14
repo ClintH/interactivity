@@ -17,20 +17,21 @@ function log(evt) {
   let someProperties = [
     'pointerType', 'type', 'pointerId',
     'clientX', 'clientY', 'offsetX', 'offsetY',
-     'pressure', 'screenX', 'screenY',
+    'pressure', 'screenX', 'screenY',
     'tangentialPressure', 'tiltX', 'tiltY', 'twist'
   ];
 
+
   // Copy proeprties
-  let t = "<span>";
+  let t = '<span>';
   someProperties.forEach(prop=> {
-    t += prop + ": " + evt[prop] + "; "
+    t += prop + ': ' + evt[prop] + '; ';
   });
-  t += "</span>";
+  t += '</span>';
 
   // Log
   let el = document.getElementById('log');
-  el.innerHTML = t + "<br />" + el.innerHTML;
+  el.innerHTML = t + '<br />' + el.innerHTML;
 }
 
 if (document.readyState != 'loading') onDocumentReady();
