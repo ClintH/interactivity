@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" /> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>websockets-skeleton</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <h1>websockets-skeleton</h1>
+    <h2>Send</h2>
+    <form id="sendForm">
+      <input type="text" value="Hello" id="sendThis"></input>
+      <input type="submit" value="Send">
+    </form>
+    <div id="sendObject">Hover over me to send event data</div>
+
+    <h2>Received</h2>
+    <div id="lastMsg">(nothing)</div>
+
+    <script src="lib/reconnecting-websocket.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,43 @@
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+body {
+  background-color: whitesmoke;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+}
+h1 {
+  color: darkred;
+}
+a, a:link, a:visited {
+  color: darkred;
+}
+a:hover {
+  color: black;
+}
+
+#lastMsg {
+  font-family: monospace;
+  overflow: scroll;
+  height: 10rem;
+}
+
+#sendObject {
+  border: 1px solid black;
+  padding: 1rem;
+  display: inline-block;
+  margin-top: 1rem;
+}
+#sendObject:hover {
+  background-color: rgb(174, 173, 173);
+}
+
+#sentCommands {
+  overflow: scroll;
+  height: 10rem;
+  width: 10rem;
+  border: 1px solid black;
+  background: white;
+}
