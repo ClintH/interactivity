@@ -5,6 +5,7 @@ html {
 html, body {
   padding: 1rem;
   margin: 0;
+  touch-action: none;
   height: 100%;
   background-color: black;
   color: white;
@@ -19,6 +20,7 @@ html, body {
   position: absolute;
   left: 50%;
   height: 12rem;
+  touch-action: none;
   width: 12rem;
   color: black;
   background-color: white;
