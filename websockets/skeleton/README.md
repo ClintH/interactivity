@@ -1,4 +1,4 @@
-# websockets-skeleton
+# websockets skeleton
 
 This is a skeleton websocket example. It consists of a "server" script (app.js) that runs in the Node.js environment, and typical "client" code in the public/ folder.
 
