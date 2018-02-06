@@ -43,3 +43,7 @@ section {
 .highlight {
   background-color: rgba(251, 250, 88, 0.78);
 }
+
+.hidden {
+  display: none;
+}

@@ -1,0 +1,27 @@
+#container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+}
+
+#results {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+}
+
+#thing {
+  background-color: red;
+  height: 20vh;
+  width: 1vw;
+}
+.hidden {
+  display: none;
+}
+#thing.inactive {
+  background-color: silver;
+}

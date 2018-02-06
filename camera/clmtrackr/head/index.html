@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>clmtrackr head</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel='stylesheet' href='/base.css'>
+  <link rel='stylesheet' href='style.css'>
+</head>
+
+<body touch-action="none">
+
+  <!-- Hidden video element for receiving camera stream -->
+  <video autoplay="true" style="display:none" id="camera" width="250" height="250"></video>
+
+  <!-- Canvas for giving visual feedback -->
+  <canvas class="hidden" style="opacity:0.5" id="canvas" width="250" height="250"></canvas>
+
+  <div id="results" style="">
+    Rotation:
+    <span id="rotation">?</span>
+    <br /> Size:
+    <span id="size">?</span>
+    <br /> Tracking:
+    <span id="tracking">no</span>
+  </div>
+
+  <div id="container">
+    <div id="thing"></div>
+  </div>
+  <script src="../lib/clmtrackr.js"></script>
+  <script defer src="script.js"></script>
+</body>
+
+</html>
