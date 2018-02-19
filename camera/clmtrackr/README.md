@@ -19,3 +19,5 @@ Uses the so-called 'emotion' classifier
 ## head
 
 This demo computes head rotation and size relative to camera frame.
+
+* [Glitch live demo](https://glitch.com/edit/#!/ch-head-track)
