@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>json-serial-bridge</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <h1>json-serial-bridge</h1>
+  <h2>Send</h2>
+  <form id="sendForm">
+    <input type="text" value="{x:1,y:2}" id="sendtoSerial"></input>
+    <input type="submit" value="Send">
+  </form>
+
+  <h2>Received</h2>
+  <span id="lastMsg">(nothing)</span>
+  <script type="module" src="reconnecting-websocket.js"></script>
+  <script src="script.js"></script>
+</body>
+
+</html>

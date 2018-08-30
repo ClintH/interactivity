@@ -1,0 +1,12 @@
+#thing {
+  position: absolute;
+  border: 1px solid red;
+  height: 4em;
+  width: 4em;
+  left: 0;
+  top: 0;
+}
+
+.pressed {
+  background-color: red;
+}
