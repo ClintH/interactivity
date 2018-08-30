@@ -15,6 +15,7 @@ var users = require('./routes/users');
 
 var program = require('commander');
 const log = console.log;
+let port = null;
 
 log(chalk.bold('json-serial-bridge'));
 program
@@ -123,7 +124,7 @@ function setupSerial(program, serialWs) {
       program.baud +
       '...'
   );
-  const port = new SerialPort(
+  port = new SerialPort(
     program.serial,
     { baudRate: program.baud },
     function(err) {
