@@ -27,6 +27,18 @@ In the directory you've got this sample:
 
 1. Run `npm install`
 
+On Windows you might need to also run the following in an Admin command prompt:
+
+```
+npm install windows-build-tools
+```
+
+And instead of plain `npm install` as shown above, use:
+
+```
+npm install --msvs_version=2015
+```
+
 To test, start the Node.js sketch: `node app.js`. Since you didn't specify which serial port represents the Arduino, you'll get a list of ports displayed. Once you identify the right port, run it again with the port. On Windows this might be something like `node app.js --serial com5 bridge` or on a Mac: `node app.js --serial /dev/tty.usbmodem1411 bridge`. The port name is the often the same or similar to what shows up in the Arduino IDE.
 
 Once running, the program doesn't show the data flowing back and forth. Add the `--debug` option if you want that.
