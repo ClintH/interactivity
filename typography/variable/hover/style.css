@@ -1,0 +1,31 @@
+/*
+See the README file for links on CSS animation
+*/
+
+@font-face {
+  font-family: 'LeagueMonoVariable';
+  src: url('../fonts/LeagueMonoVariable.ttf');
+}
+
+html {
+  box-sizing: border-box;
+}
+html,
+body {
+  padding: 0;
+  margin: 1em;
+  height: 100%;
+}
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+#clock {
+  font-family: 'LeagueMonoVariable';
+  font-size: 6em;
+  text-rendering: geometricPrecision;
+  font-variation-settings: 'wght' 200, 'wdth' 1;
+  text-shadow: 0 0; /* a hack needed to improve rendering */
+}

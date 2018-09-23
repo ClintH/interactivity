@@ -1,0 +1,81 @@
+/*
+See the README file for links on CSS animation
+*/
+
+@font-face {
+  font-family: 'LeagueMonoVariable';
+  src: url('../fonts/LeagueMonoVariable.ttf');
+}
+
+html {
+  box-sizing: border-box;
+}
+html,
+body {
+  padding: 0;
+  margin: 1em;
+  height: 100%;
+}
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+#clock {
+  font-family: 'LeagueMonoVariable';
+  font-size: 6em;
+  text-rendering: geometricPrecision;
+  font-variation-settings: 'wght' 200, 'wdth' 1;
+  text-shadow: 0 0; /* a hack needed to improve rendering */
+}
+
+#hour:hover {
+  animation-name: weightAnim;
+  animation-duration: 1000ms;
+  animation-delay: 10ms;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  animation-fill-mode: forwards;
+}
+
+@keyframes weightAnim {
+  0% {
+    font-variation-settings: 'wght' 200;
+  }
+  100% {
+    font-variation-settings: 'wght' 1000;
+  }
+}
+
+#minute:hover {
+  font-variation-settings: 'wdth' 1000;
+  /* 
+  this shows the compressed way of setting a bunch
+  of animation properties
+  */
+  animation: widthAnim 400ms alternate ease-in-out;
+}
+
+@keyframes widthAnim {
+  0% {
+    font-variation-settings: 'wdth' 1;
+  }
+  100% {
+    font-variation-settings: 'wdth' 1000;
+  }
+}
+
+#second:hover {
+  animation: weightAndWidthAnim 200ms infinite ease-in-out;
+}
+
+@keyframes weightAndWidthAnim {
+  0% {
+    font-variation-settings: 'wdth' 1, 'wght' 1;
+  }
+  100% {
+    font-variation-settings: 'wdth' 1000, 'wght' 1000;
+  }
+}

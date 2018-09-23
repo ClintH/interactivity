@@ -1,0 +1,44 @@
+@font-face {
+  font-family: 'LeagueMonoVariable';
+  src: url('../fonts/LeagueMonoVariable.ttf');
+}
+
+html {
+  box-sizing: border-box;
+  height: 100%;
+}
+html,
+body {
+  padding: 0;
+  margin: 1em;
+  height: 100%;
+  overflow: hidden;
+}
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+#container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+#pangrams {
+  font-size: 6em;
+  font-family: 'LeagueMonoVariable';
+  text-rendering: geometricPrecision;
+  font-size: 4em;
+  perspective: 40rem; /* needed for transform to have an effect */
+  text-shadow: 0 0; /* a hack needed to improve rendering */
+  cursor: crosshair;
+}
+
+#pangrams span {
+  /* this is the styling for individual letters */
+  display: inline-block;
+}
