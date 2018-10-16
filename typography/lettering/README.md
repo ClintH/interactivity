@@ -6,7 +6,7 @@ If you want to work with text character by character, the [Charming.js](https://
 
 - [Charming.js](https://github.com/yuanqing/charming) by Lim Yuan Qing
 
-# Live demoi
+# Live demo
 
 * [Live demo on Glitch](https://ix-type-lettering.glitch.me/)
 * [Fork the code on Glitch](https://glitch.com/edit/#!/ix-type-lettering)
