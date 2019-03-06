@@ -1,3 +1,7 @@
+# !! deprecated
+
+This sample remains to demonstrate simple bidirectional communication, but consider  instead the `json-serial-bridge` sample. It uses a more robust way of piping data back and forth.
+
 # ws-serial-bridge
 
 This demonstrates bidirectional communication between an Arduino sketch and Javascript running in the browser.
