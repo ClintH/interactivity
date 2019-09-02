@@ -2,69 +2,79 @@ const cameraEl = document.getElementById('camera');
 const canvasEl = document.getElementById('captureCanvas');
 const offscreenCanvasEl = document.getElementById('offscreenCanvas');
 
+startCamera();
+
 cameraEl.addEventListener('play', () => {
-  console.log("Video stream started");
+  console.log('Video stream started');
+
+  // Set the offscreen canvas to be same size as video feed
   offscreenCanvasEl.width = cameraEl.videoWidth;
   offscreenCanvasEl.height = cameraEl.videoHeight;
+
+  // Set the drawing canvas to be same size too
   canvasEl.width = cameraEl.videoWidth;
   canvasEl.height = cameraEl.videoHeight;
 
-  // Grab the first frame from the camera now that the stream has started
-  window.requestAnimationFrame(renderFrame);  
+  // Call 'renderFrame' now that the stream has started
+  window.requestAnimationFrame(renderFrame);
 });
 
-startCamera();
 
 // Demonstrates a mediated rendering of video frames
 function renderFrame() {
   let offscreenC = offscreenCanvasEl.getContext('2d');
   let c = canvasEl.getContext('2d');
 
-  // 1. Capture to offscreen canvas
+  // 1. Capture to offscreen buffer
   offscreenC.drawImage(cameraEl, 0, 0);
-  
-  // 2. Do whatever processing we want to the this buffer
-  // Example from: https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Manipulating_video_using_canvas
+
+  // 2. Read the pixel data from this buffer
   let frame = offscreenC.getImageData(0, 0, offscreenCanvasEl.width, offscreenCanvasEl.height);
+
+  // 3. Do whatever processing we want to the this buffer
+  // Example from: https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Manipulating_video_using_canvas
+  // In this case, we're going to make pixels with a low amount of blue colour transparent
 
   let blueCount = 0;
 
-  // 4 is used here since frame is represented as R G B A
-  let l = frame.data.length / 4;  
-  for (let i = 0; i < l; i++) {
-    let r = frame.data[i * 4 + 0];
-    let g = frame.data[i * 4 + 1];
-    let b = frame.data[i * 4 + 2];
+  // Frame data is one giant array of red, green, blue and alpha values per pixel.
+  // R G B A R G B A R G B A ... (that's three pixels)
 
-    // If pixel values exceed a threshold, set it to transparent
-    // Here, throwing away pixels which are low in blue
+  let totalPixels = frame.data.length / 4; // Get total number of pixels by dividing by 4 (since each pixel uses 4 values)
+  for (let pixelIndex = 0; pixelIndex < totalPixels; pixelIndex++) {
+    // This shows you how to get the RGB values. We just want B
+    // let r = frame.data[pixelIndex * 4 + 0];
+    // let g = frame.data[pixelIndex * 4 + 1];
+    let b = frame.data[pixelIndex * 4 + 2];
+
+    // If amount of blue is less than 150 (out of 255), set the pixel to transparent
     if (b < 150) {
-      frame.data[i * 4 + 3] = 0; // Set alpha to 0, transparent
+      frame.data[pixelIndex * 4 + 3] = 0; // Set alpha to 0 (transparent)
       blueCount++;
     }
   }
 
-  // Draw something in the background
-  var gradient = c.createLinearGradient(0,0, canvasEl.width, canvasEl.height);
+  // Draw something in the background so effect is obvious
+  var gradient = c.createLinearGradient(0, 0, canvasEl.width, canvasEl.height);
   gradient.addColorStop(0, 'deeppink');
   gradient.addColorStop(1, 'palegreen');
-  
   c.fillStyle = gradient;
   c.fillRect(0, 0, canvasEl.width, canvasEl.height);
 
-  // Write image data to destination context
+  // Write our modified frame back to the buffer
   offscreenC.putImageData(frame, 0, 0);
 
+  // Draw buffer to the visible canvas
   c.drawImage(offscreenCanvasEl, 0, 0);
 
   // % of image that is 'blue enough'
-  let blueValue = 100 - parseInt(100*(blueCount / (frame.data.length /4)));
+  let blueValue = 100 - Math.floor(100 * (blueCount / (frame.data.length / 4)));
   c.fillStyle = 'white';
   c.font = '48px "Fira Code", Monaco, "Andale Mono", "Lucida Console", "Bitstream Vera Sans Mono", "Courier New", Courier, monospace';
-  c.fillText(blueValue +"%", 100, 100);
+  c.fillText(blueValue + "%", 100, 100);
 
   // Repeat!
-  window.requestAnimationFrame(renderFrame); 
+  window.requestAnimationFrame(renderFrame);
 }
 
 
@@ -73,26 +83,29 @@ function renderFrame() {
 // Reports outcome of trying to get the camera ready
 function cameraReady(err) {
   if (err) {
-    console.log("Camera not ready: " + err);
+    console.log('Camera not ready: ' + err);
     return;
   }
-  console.log("Camera ready");
+  console.log('Camera ready');
 }
 
 // Tries to get the camera ready, and begins streaming video to the cameraEl element.
 function startCamera() {
   navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
   if (!navigator.getUserMedia) {
-    cameraReady("getUserMedia not supported");
+    cameraReady('getUserMedia not supported');
     return;
   }
-  navigator.getUserMedia({video:true}, 
+  navigator.getUserMedia({ video: true },
     (stream) => {
-      cameraEl.src = window.URL.createObjectURL(stream);
+      try {
+        cameraEl.srcObject = stream;
+      } catch (error) {
+        cameraEl.srcObject = window.URL.createObjectURL(stream);
+      }
       cameraReady();
     },
     (error) => {
-      cameraNotReady(error);
-    }
-  );
+      cameraReady(error);
+    });
 }

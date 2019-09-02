@@ -1,4 +1,4 @@
-# camera-clmtrackr
+# clmtrackr sketches
 
 Demo of Auduno's [face tracking implementation](https://github.com/auduno/clmtrackr)
 
@@ -16,7 +16,7 @@ Tracks a face and draws it on the canvas
 
 Uses the so-called 'emotion' classifier
 
-## head
+## face
 
 This demo computes head rotation and size relative to camera frame.
 

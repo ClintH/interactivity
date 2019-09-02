@@ -5,56 +5,64 @@ const tracker = new clm.tracker();
 startCamera();
 
 cameraEl.addEventListener('play', () => {
-  // Resize everything to match the actual
-  // video frame size
+  // Resize everything to match video frame size
   canvasEl.width = cameraEl.videoWidth;
   canvasEl.height = cameraEl.videoWidth;
   cameraEl.width = cameraEl.videoWidth;
   cameraEl.height = cameraEl.videoHeight;
 
+  // Init and start tracker
   tracker.init();
   tracker.start(cameraEl);
-  window.requestAnimationFrame(renderFrame);  
+
+  // Process a frame
+  window.requestAnimationFrame(renderFrame);
 });
 
+
+// Processes the last frame from the camera
 function renderFrame() {
   var c = canvasEl.getContext('2d');
+
+  // If tracking, p is an array of track points
   var p = tracker.getCurrentPosition();
-  
+
   if (p) {
-    // Optional visual feedback of tracker
     c.drawImage(cameraEl, 0, 0);
     tracker.draw(canvasEl);
+
+    // Label each point
+    for (var i = 0; i < p.length; i++) {
+      c.fillText(i, p[i][0], p[i][1]);
+    }
   }
 
   // Repeat!
-  window.requestAnimationFrame(renderFrame);  
+  window.requestAnimationFrame(renderFrame);
 }
 
 // ------------------------
-
 // Reports outcome of trying to get the camera ready
 function cameraReady(err) {
   if (err) {
-    console.log("Camera not ready: " + err);
+    console.log('Camera not ready: ' + err);
     return;
   }
 }
 
 // Tries to get the camera ready, and begins streaming video to the cameraEl element.
 function startCamera() {
-  navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
-  if (!navigator.getUserMedia) {
-    cameraReady("getUserMedia not supported");
-    return;
-  }
-  navigator.getUserMedia({video:true}, 
-    (stream) => {
-      cameraEl.src = window.URL.createObjectURL(stream);
+  const constraints = {
+    audio: false,
+    video: { width: 640, height: 480 }
+  };
+  navigator.mediaDevices
+    .getUserMedia(constraints)
+    .then(function (stream) {
+      cameraEl.srcObject = stream;
       cameraReady();
-    },
-    (error) => {
-      cameraNotReady(error);
-    }
-  );
+    })
+    .catch(function (err) {
+      cameraReady(err); // Report error
+    });
 }

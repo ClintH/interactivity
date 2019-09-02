@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-  <title>camera-deeplearn</title>
+  <title>ml-mobilenet</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -10,21 +11,19 @@
   <link rel='stylesheet' href='/base.css'>
   <link rel='stylesheet' href='style.css'>
 </head>
-<body touch-action="none">
+
+<body>
 
   <!-- Video element for showing camera stream -->
-  <video autoplay="true" id="camera" width="227" height="227"></video>
+  <video class="hidden" autoplay="true" id="camera" width="227" height="227"></video>
+  <button id="btnFreeze">Freeze</button>
+  <script src="lib/tfjs@1.0.1.js"></script>
+  <script src="lib/mobilenet@1.0.0.js"></script>
 
-  <script src="deeplearn/deeplearn.js"></script> 
-  <script src="deeplearn/squeezenet.js"></script>
-  <script src="deeplearn/imagenet_util.js"></script>
+  <canvas id="canvas"></canvas>
+  <div id="results">Loading...</div>
 
-  <script type="module">
-    import demo from './script.js';
-    demo();
-  </script>
-
-  <canvas style="display:none" id="canvas"></canvas>
-  <div style="padding: 1rem; width:40rem" id="results"></div>
+  <script defer src="script.js"></script>
 </body>
+
 </html>

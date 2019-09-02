@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>camera</title>
+  <title>ml-coco-ssd</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -12,17 +12,17 @@
   <link rel='stylesheet' href='style.css'>
 </head>
 
-<body touch-action="none">
-
+<body>
 
   <!-- Video element for showing camera stream -->
-  <video style="display:none" autoplay="true" id="camera"></video>
+  <button id="btnFreeze">Freeze</button>
+  <video class="hidden" autoplay="true" id="camera" width="227" height="227"></video>
 
+  <script src="lib/tfjs.js"></script>
+  <script src="lib/coco-ssd.js"></script>
+
+  <canvas id="canvas"></canvas>
   <script defer src="script.js"></script>
-
-  <canvas id="captureCanvas"></canvas>
-  <canvas id="offscreenCanvas" style="display:none"></canvas>
-
 </body>
 
 </html>

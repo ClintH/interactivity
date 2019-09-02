@@ -9,12 +9,12 @@ startCamera();
 function captureToImg() {
   const imagesEl = document.getElementById('captureImages');
   const offscreenCanvasEl = document.getElementById('offscreenCanvas');
-  
+
   // 1. First we have to capture to a hidden canvas
   offscreenCanvasEl.width = cameraEl.videoWidth;
   offscreenCanvasEl.height = cameraEl.videoHeight;
   var c = offscreenCanvasEl.getContext('2d');
-  c.drawImage(cameraEl, 0, 0, cameraEl.videoWidth , cameraEl.videoHeight);
+  c.drawImage(cameraEl, 0, 0, cameraEl.videoWidth, cameraEl.videoHeight);
 
   // 2. Then we grab the data from the hidden canvas, and set it as the
   // source of a new IMG element
@@ -29,7 +29,7 @@ function captureToCanvas() {
   canvasEl.width = cameraEl.videoWidth;
   canvasEl.height = cameraEl.videoHeight;
   var c = canvasEl.getContext('2d');
-  c.drawImage(cameraEl, 0, 0, cameraEl.videoWidth , cameraEl.videoHeight);
+  c.drawImage(cameraEl, 0, 0, cameraEl.videoWidth, cameraEl.videoHeight);
 }
 
 // ------------------------
@@ -50,9 +50,14 @@ function startCamera() {
     cameraReady('getUserMedia not supported');
     return;
   }
-  navigator.getUserMedia({video:true}, 
+
+  navigator.getUserMedia({ video: true },
     (stream) => {
-      cameraEl.src = window.URL.createObjectURL(stream);
+      try {
+        cameraEl.srcObject = stream;
+      } catch (error) {
+        cameraEl.srcObject = window.URL.createObjectURL(stream);
+      }
       cameraReady();
     },
     (error) => {

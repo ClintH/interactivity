@@ -8,6 +8,18 @@ body {
   height: 100%;
 }
 
+#captureCanvas {
+  border: 1px solid black;
+  background-color: rgb(250, 162, 253);
+  padding: 1rem;
+}
+
+#captureImages {
+  border: 1px solid black;
+  background-color: rgb(162, 247, 253);
+  padding: 1rem;
+}
+
 section {
   position: absolute;
   top: 50%;
