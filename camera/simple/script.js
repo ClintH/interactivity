@@ -1,3 +1,4 @@
+// @ts-nocheck
 const cameraEl = document.getElementById('camera');
 
 document.getElementById('btnCaptureCanvas').addEventListener('click', captureToCanvas);

@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+// @ts-nocheck
 // Adapted from https://github.com/auduno/clmtrackr/blob/dev/examples/clm_emotiondetection.html
 const cameraEl = document.getElementById('camera');
 const canvasEl = document.getElementById('canvas');

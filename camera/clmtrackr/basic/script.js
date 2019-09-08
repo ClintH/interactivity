@@ -1,3 +1,5 @@
+// @ts-nocheck
+/* eslint-disable no-undef */
 const cameraEl = document.getElementById('camera');
 const canvasEl = document.getElementById('canvas');
 const tracker = new clm.tracker();

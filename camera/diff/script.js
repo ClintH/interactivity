@@ -1,3 +1,4 @@
+// @ts-nocheck
 const cameraEl = document.getElementById('camera');
 const canvasEl = document.getElementById('captureCanvas');
 const offscreenCanvasEl = document.getElementById('offscreenCanvas');
