@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>ml-posenet</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel='stylesheet' href='/base.css'>
+  <link rel='stylesheet' href='style.css'>
+</head>
+
+<body>
+
+  <!-- Video element for showing camera stream -->
+  <button id="btnFreeze">Freeze</button>
+  <video class="hidden" autoplay="true" id="camera"></video>
+
+  <script src="lib/tfjs.js"></script>
+  <script src="lib/posenet.js"></script>
+
+  <canvas id="canvas"></canvas>
+
+  <script defer src="script.js"></script>
+</body>
+
+</html>

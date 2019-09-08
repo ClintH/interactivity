@@ -1,3 +1,4 @@
+// @ts-nocheck
 const cameraEl = document.getElementById('camera');
 const canvasEl = document.getElementById('canvas');
 const resultsEl = document.getElementById('results');
