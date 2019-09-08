@@ -1,3 +1,4 @@
+// @ts-nocheck
 const cameraEl = document.getElementById('camera');
 let colours = null;
 let videoWidth = 0;
@@ -8,26 +9,27 @@ startCamera();
 // Video stream started, set up the tracker
 cameraEl.addEventListener('play', () => {
   videoHeight = cameraEl.videoHeight;
-  videoWidth= cameraEl.videoWidth;
+  videoWidth = cameraEl.videoWidth;
   cameraEl.style.width = videoWidth;
   cameraEl.style.height = videoHeight;
-  
+
   // You can register your own custom colour tracking
   // pass an identifier as well as a function which returns true/false
-  tracking.ColorTracker.registerColor('green', (r,g,b) => {
+  tracking.ColorTracker.registerColor('green', (r, g, b) => {
     if (r < 50 && g > 200 & b < 50) return true;
     return false;
   });
-  
+
   // You can choose: magenta, cyan or yellow as the colours to track
   // or your own custom function, such as 'green' here.
   colours = ['magenta', 'green', 'cyan', 'yellow'];
   let tracker = new tracking.ColorTracker(colours);
-  
+
   // Create an element for each colour we're tracking
   createColourElements();
 
   // Use this method to limit the size of tracked objects
+  // (useful for eliminating false positives)
   // tracker.setMinDimension(10);
 
   // Listen for tracking data
@@ -35,23 +37,19 @@ cameraEl.addEventListener('play', () => {
 
   // Tell the tracker to watch the video element
   tracking.track(cameraEl, tracker);
-
-  // Grab the first frame from the camera now that the stream has started
-  window.requestAnimationFrame(renderFrame);  
 });
 
-function map(v, low1, high1, low2, high2) {
-  return low2 + (v - low1) * (high2 - low2) / (high1 - low1);
-}
 
 function onTrack(evt) {
+
   // Loop through each of the colours we're tracking
   colours.forEach(c => {
+    // As a demo, we move a bunch of coloured elements around
     let el = document.getElementById('colour-' + c);
     let trackResult = evt.data.find(r => r.color == c);
     if (trackResult == null) {
       // Colour wasn't found
-      el.style.opacity = 0.5;
+      el.style.opacity = 0.2;
     } else {
       // Colour was found!
       el.style.opacity = 1.0;
@@ -60,6 +58,7 @@ function onTrack(evt) {
       // in video frame. Note that coordinates are relative
       // to the video frame size, and not the viewport
 
+      // Use the same coordinates/size as video frame
       // el.style.left = trackResult.x + 'px';
       // el.style.top = trackResult.y + 'px';
       // el.style.width = trackResult.width + 'px';
@@ -69,18 +68,18 @@ function onTrack(evt) {
       var ratioW = window.innerWidth / videoWidth;
       var ratioH = window.innerHeight / videoHeight;
 
-      el.style.left =   (trackResult.x * ratioW)      + 'px';
-      el.style.top =    (trackResult.y * ratioH)      + 'px';
-      el.style.width =  (trackResult.width * ratioW)  + 'px';
+      el.style.left = (trackResult.x * ratioW) + 'px';
+      el.style.top = (trackResult.y * ratioH) + 'px';
+      el.style.width = (trackResult.width * ratioW) + 'px';
       el.style.height = (trackResult.height * ratioH) + 'px';
     }
   });
 }
 
+// Creates a coloured DIV for each colour being tracked
 function createColourElements() {
   colours.forEach(c => {
     var t = document.createElement('DIV');
-    t.innerHTML = c;
     t.id = 'colour-' + c; // Give each element an id so we can get it later
     t.style.backgroundColor = c;
     t.classList.add('colour');
@@ -88,9 +87,10 @@ function createColourElements() {
   });
 }
 
-function renderFrame() {
-  window.requestAnimationFrame(renderFrame);  
-  
+// Helper function that maps v, with a given low and high range,
+// to a new low and high range.
+function map(v, low1, high1, low2, high2) {
+  return low2 + (v - low1) * (high2 - low2) / (high1 - low1);
 }
 
 // ------------------------
@@ -98,7 +98,7 @@ function renderFrame() {
 // Reports outcome of trying to get the camera ready
 function cameraReady(err) {
   if (err) {
-    console.error('Camera not ready: ' + err);
+    console.log('Camera not ready: ' + err);
     return;
   }
 }
@@ -110,9 +110,22 @@ function startCamera() {
     cameraReady('getUserMedia not supported');
     return;
   }
-  navigator.getUserMedia({video:true}, 
+
+  // Note the request parameters given to `getUserMedia`.
+  //  Modifying this can allow you to select a different camera or the source resolution.
+  //  For more details: https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia
+  // Examples:
+  //  { video: { width: 1280, height: 720}, audio: false }
+  //  { video: { facingMode: 'environment' }, audio: false}
+  //  { video: { deviceId: '23e18d4292203610ee41e983b24c54fb7e30f98c62340d8004c66ecf885cab54' }, audio: false}
+  // { video: true, audio: false }
+  navigator.getUserMedia({ video: true, audio: false },
     (stream) => {
-      cameraEl.src = window.URL.createObjectURL(stream);
+      try {
+        cameraEl.srcObject = stream;
+      } catch (error) {
+        cameraEl.srcObject = window.URL.createObjectURL(stream);
+      }
       cameraReady();
     },
     (error) => {

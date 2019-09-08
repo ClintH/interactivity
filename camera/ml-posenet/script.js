@@ -65,7 +65,6 @@ function processPoses(poses) {
       var c = canvasEl.getContext('2d');
       c.fillStyle = 'black';
       c.fillText('Slouch factor: ' + slouchFactor, 100, 10);
-
     }
   }
 
