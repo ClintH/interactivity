@@ -4,9 +4,6 @@ const cameraEl = document.getElementById('camera');
 document.getElementById('btnCaptureCanvas').addEventListener('click', captureToCanvas);
 document.getElementById('btnCaptureImg').addEventListener('click', captureToImg);
 
-// Demo: list available devices
-enumerateDevices();
-
 // Start default camera
 startCamera();
 
@@ -39,23 +36,21 @@ function captureToCanvas() {
 
 // ------------------------
 
-function enumerateDevices() {
-  // Based on: https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/enumerateDevices
+function getDepthCamera(completion) {
   if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
-    console.log('enumerateDevices() not supported.');
-    return;
+    return completion('enumerateDevices() not supported.');
   }
 
   // List cameras and microphones.
   navigator.mediaDevices.enumerateDevices()
     .then(function (devices) {
       devices.forEach(function (device) {
-        if (device.kind !== 'videoinput') return;
-        console.log(device.label + ' id = ' + device.deviceId);
+        if (device.label.indexOf('Depth') < 0) return;
+        completion(false, device.deviceId);
       });
     })
     .catch(function (err) {
-      console.log(err.name + ': ' + err.message);
+      completion(err.name + ': ' + err.message, null);
     });
 }
 
@@ -75,24 +70,22 @@ function startCamera() {
     return;
   }
 
-  // Note the request parameters given to `getUserMedia`.
-  //  Modifying this can allow you to select a different camera or the source resolution.
-  //  For more details: https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia
-  // Examples:
-  //  { video: { width: 1280, height: 720}, audio: false }
-  //  { video: { facingMode: 'environment' }, audio: false}
-  //  { video: { deviceId: '23e18d4292203610ee41e983b24c54fb7e30f98c62340d8004c66ecf885cab54' }, audio: false}
-  // { video: true, audio: false }
-  navigator.getUserMedia({ video: true, audio: false },
-    (stream) => {
-      try {
-        cameraEl.srcObject = stream;
-      } catch (error) {
-        cameraEl.srcObject = window.URL.createObjectURL(stream);
-      }
-      cameraReady();
-    },
-    (error) => {
-      cameraReady(error);
-    });
+  getDepthCamera((err, id) => {
+    if (err) return cameraReady(err);
+    console.log('Opening found depth camera: ' + id);
+    navigator.getUserMedia({ video: { deviceId: id }, audio: false },
+      (stream) => {
+        try {
+          cameraEl.srcObject = stream;
+        } catch (error) {
+          cameraEl.srcObject = window.URL.createObjectURL(stream);
+        }
+        cameraReady();
+      },
+      (error) => {
+        cameraReady(error);
+      });
+  });
+
+
 }

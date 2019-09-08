@@ -7,13 +7,8 @@ Demo shows how to:
 
 [Live demo on Glitch](https://ix-camera-simple.glitch.me/), or [fork it](https://glitch.com/edit/#!/remix/ix-camera-simple).
 
-The demo also contains a snippet of code showing how to list available cameras. This can be useful for devices with a front and rear camera, or when a USB camera is connected.
+This demo builds from: https://01.org/zh/node/5101
 
-
-Read more:
-* [Taking still photos with WebRTC](https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API/Taking_still_photos)
-* [Enumerating video inputs](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/enumerateDevices)
-* [getUserMedia](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia)
 
 # Things to try
 

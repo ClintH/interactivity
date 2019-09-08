@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>camera - simple</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel='stylesheet' href='/base.css'>
+  <link rel='stylesheet' href='style.css'>
+</head>
+
+<body>
+  <nav>
+    <button id="btnCaptureCanvas">Capture to canvas</button>
+    <button id="btnCaptureImg">Capture to IMG</button>
+  </nav>
+
+  <!-- Video element for showing camera stream -->
+  <video style="color: dimgray" autoplay="true" id="camera" width="250" height="250"></video>
+
+
+  <!-- Demonstrate drawing to canvas -->
+  <canvas id="captureCanvas" width="250" height="250"></canvas>
+
+  <!-- Demonstrate capturing to IMG element -->
+  <canvas id="offscreenCanvas" style="display:none"></canvas>
+  <div id="captureImages"></div>
+
+  <script defer src="script.js"></script>
+</body>
+
+</html>
