@@ -9,6 +9,6 @@ Servo hookup (for three-wire brown, red, yellow)
 * Red: 5V
 * Yellow: analog pin
 
-Please see the README.md for json-serial-bridge for more info on setting that up.
+Please see the README.md for *json-serial-bridge* for more info on setting that up. Once setup, you can place this directory into its `public` folder.
 
 The sketch is a *playground* that means it is constructed so you have manual control over the servos, but isn't meant for further sketching. See `servo-simple` for an example of that.
