@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>servo-playground</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <h1>Servo playground</h1>
+  <div class="servoControls">
+    <h2>Continuous rotation</h2>
+    <label>
+      Speed:<input type="number" min="0" value="90" max="180" id="inputContinuousSpeed" /><br />
+      <div class="notes">0: full speed one direction, 90: stopped, 180: full speed other
+        direction.</div>
+    </label>
+    <label>
+      Duration (millis):
+      <input type="number" min="0" value="0" max="60000" id="inputContinuousDuration" />
+      <div class="notes">Use 0 keep running</div>
+    </label>
+    <button id="btnRotate">Rotate!</button>
+    <button id="btnRotationStop">Stop</button>
+  </div>
+  <div class="servoControls">
+    <h2>Single turn</h2>
+    <label>
+      Position:<input type="number" min="0" value="90" max="180" id="inputPosition" /><br />
+      <div class="notes">0: full rotation one way, 90: middle, 180: full rotation another.
+        direction.</div>
+    </label>
+    <button id="btnMove">Move!</button>
+    <button id="btnSingleStop">Stop</button>
+  </div>
+
+  <div id="msg">...</div>
+  <script defer src="../reconnecting-websocket.js"></script>
+  <script defer src="script.js"></script>
+</body>
+
+</html>

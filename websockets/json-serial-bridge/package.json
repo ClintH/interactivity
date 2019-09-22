@@ -1,7 +1,7 @@
 {
   "name": "ws-serial-bridge",
   "author": "Clint Heyer",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "private": false,
   "scripts": {
     "start": "node ./bin/www"
@@ -10,20 +10,20 @@
     "eslint": "^5.4.0"
   },
   "dependencies": {
-    "body-parser": "~1.18.3",
-    "chalk": "^2.4.1",
-    "commander": "^2.17.1",
+    "body-parser": "~1.19.0",
+    "chalk": "^2.4.2",
+    "commander": "^3.0.1",
     "cookie-parser": "~1.4.3",
-    "debug": "~3.1.0",
+    "debug": "~4.1.1",
     "errorhandler": "^1.5.0",
-    "express": "~4.16.3",
+    "express": "~4.17.0",
     "express-ws": "^4.0.0",
-    "middleware-static-livereload": "0.0.5",
+    "middleware-static-livereload": "1.2.7",
     "morgan": "~1.9.0",
-    "node-dev": "^3.1.3",
+    "node-dev": "^4.0.0",
     "pug": "2.0.3",
-    "serialport": "^7.0.2",
+    "serialport": "^7.1.5",
     "serve-favicon": "~2.5.0",
-    "ws": "^6.0.0"
+    "ws": "^7.1.2"
   }
 }

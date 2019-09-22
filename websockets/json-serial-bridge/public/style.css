@@ -1,5 +1,10 @@
 html {
   box-sizing: border-box;
+  --dark: #403f4c;
+  --lightSpot: #e84855;
+  --darkSpot: #f9dc5c;
+  --spot: #3185fc;
+  --light: #efbcd5;
 }
 *,
 *:before,
@@ -7,19 +12,32 @@ html {
   box-sizing: inherit;
 }
 body {
-  background-color: whitesmoke;
-  padding: 1em;
+  width: 100%;
+  height: 100%;
+  color: var(--dark);
+  font-family: 'Roboto Slab', 'Roboto', 'Consolas', serif;
+  margin: 2em;
 }
 h1 {
-  color: darkred;
+  color: var(--lightSpot);
+}
+h2 {
+  color: var(--lightSpot);
 }
 a,
 a:link,
 a:visited {
-  color: rgb(0, 83, 139);
+  color: var(--spot);
 }
 a:hover {
   color: black;
+  text-decoration: underline;
+}
+
+h1 > a:link,
+h1 > a:visited {
+  text-decoration: none;
+  color: var(--lightSpot);
 }
 
 #lastMsg {
