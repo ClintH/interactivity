@@ -4,7 +4,7 @@
  * Usage: import visualiser.js. Instantiate on document load, and pass in the
  * parent element into the constructor.
  *
- * eg: renderer = new Renderer(document.getElementById('renderer'));
+ * eg: const v = new Visualiser(document.getElementById('renderer'));
  *
  * Data must be passed to the component via renderFreq or renderWave.
  */
@@ -57,10 +57,8 @@ class Visualiser {
 
     document.getElementById('rendererComponentWaveReset').addEventListener('click', () => {
       renderer.clear(document.getElementById('waveData'));
-
     });
   }
-
 
   renderFreq(freq) {
     if (!this.isExpanded()) return; // Don't render if collapsed
@@ -75,7 +73,6 @@ class Visualiser {
     const pointer = this.getPointerRelativeTo(canvas);
     var width = (canvasWidth / bins);
     var minMax = getMinMax(freq);
-
 
     for (var i = 0; i < bins; i++) {
       if (!Number.isFinite(freq[i])) continue;
@@ -107,7 +104,6 @@ class Visualiser {
 
       }
       g.fillRect(left, offset, width, height);
-
     }
   }
 
@@ -227,7 +223,5 @@ class Visualiser {
       x: evt.pageX,
       y: evt.pageY
     };
-
   }
-
 }

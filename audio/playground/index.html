@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>audio playground</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <h1>audio playground</h1>
+  <section>
+    <h2>Audio processing</h2>
+    <div>
+      High cut: <span id="lowPassFreqLabel"></span><br />
+      <input type="range" min="20" max="24000" value="24000" id="lowPassFreq">
+    </div>
+    <div>
+      Low cut: <span id="highPassFreqLabel"></span><br />
+      <input type="range" min="1" value="0" max="23000" id="highPassFreq">
+    </div>
+    <div>
+      FFT size<br />
+      <select id="fftSize">
+        <option>32</option>
+        <option>256</option>
+        <option selected>1024</option>
+        <option>4096</option>
+        <option>16384</option>
+        <option>32768</option>
+      </select>
+    </div>
+    <div>
+      Smoothing time constant<br />
+      <input type="range" value="50" min="0" max="90" id="smoothingTimeConstant" />
+    </div>
+  </section>
+  <div id="visualiser"></div>
+  <script src="../util.js"></script>
+  <script src="../visualiser.js"></script>
+  <script src="script.js"></script>
+</body>
+
+</html>
