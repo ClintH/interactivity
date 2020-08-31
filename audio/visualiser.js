@@ -56,7 +56,7 @@ class Visualiser {
     this.element.addEventListener('pointerleave', (e) => { this.pointerDelaying = false; this.pointerDown = false; })
 
     document.getElementById('rendererComponentWaveReset').addEventListener('click', () => {
-      renderer.clear(document.getElementById('waveData'));
+      this.clear(document.getElementById('waveData'));
     });
   }
 
@@ -148,9 +148,10 @@ class Visualiser {
     const canvasHeight = canvas.clientHeight;
     const pointer = this.getPointerRelativeTo(canvas);
     const infoAreaHeight = 20;
+    const infoAreaWidth = 60;
     const bins = wave.length;
     g.fillStyle = 'white';
-    g.fillRect(0, 0, canvasWidth, infoAreaHeight);
+    g.fillRect(0, 0, infoAreaWidth, infoAreaHeight);
 
     var width = canvasWidth / bins;
 
@@ -191,7 +192,7 @@ class Visualiser {
     // Draw
     if (this.pointerDown) {
       g.fillStyle = 'rgba(255,255,0,1)';
-      g.fillRect(0, 0, 220, 20);
+      g.fillRect(infoAreaWidth, 0, 150, 20);
       g.fillStyle = 'black';
       g.fillText('Min: ' + this.waveTracker.min().toFixed(2), 60, 10);
       g.fillText('Max: ' + this.waveTracker.max().toFixed(2), 110, 10);
