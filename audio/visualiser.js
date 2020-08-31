@@ -7,6 +7,8 @@
  * eg: const v = new Visualiser(document.getElementById('renderer'));
  *
  * Data must be passed to the component via renderFreq or renderWave.
+ * 
+ * Draws on https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Visualizations_with_Web_Audio_API
  */
 class Visualiser {
 

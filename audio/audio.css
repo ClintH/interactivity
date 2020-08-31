@@ -1,0 +1,39 @@
+html {
+  box-sizing: border-box;
+  --dark: #403f4c;
+  --lightSpot: #e84855;
+  --darkSpot: #f9dc5c;
+  --spot: #3185fc;
+  --light: #efbcd5;
+}
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+body {
+  color: var(--dark);
+  font-family: 'Roboto Slab', serif;
+  margin: 2em;
+}
+h1 {
+  color: var(--lightSpot);
+}
+h2 {
+  color: var(--lightSpot);
+}
+a,
+a:link,
+a:visited {
+  color: var(--spot);
+}
+a:hover {
+  color: black;
+  text-decoration: underline;
+}
+
+h1 > a:link,
+h1 > a:visited {
+  text-decoration: none;
+  color: var(--lightSpot);
+}
