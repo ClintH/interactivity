@@ -1,0 +1,25 @@
+html {
+  box-sizing: border-box;
+
+}
+html, body {
+  padding: 0;
+  margin: 0;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+body {
+  padding: 2em;
+}
+
+.hit {
+  background-color: deeppink;
+}
+
+.target {
+  padding: 1em;
+  border: 1px solid dimgray;
+  display: inline-block;
+}

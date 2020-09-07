@@ -64,6 +64,7 @@ class Visualiser {
 
   renderFreq(freq) {
     if (!this.isExpanded()) return; // Don't render if collapsed
+    if (!freq) return; // Data is undefined/null
 
     const canvas = document.getElementById('rendererComponentFreqData');
     const g = canvas.getContext('2d');
@@ -143,7 +144,7 @@ class Visualiser {
   // Adapted from MDN's AnalyserNode.getFloatTimeDomainData() example
   renderWave(wave, bipolar = true) {
     if (!this.isExpanded()) return; // Don't render if collapsed
-
+    if (!wave) return; // Undefined or null data
     const canvas = document.getElementById('rendererComponentWaveData');
     const g = canvas.getContext('2d');
     const canvasWidth = canvas.clientWidth;
