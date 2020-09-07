@@ -41,6 +41,7 @@ function getAvg(data, start = 0, end = data.length) {
   return total / end - start;
 }
 
+
 class Tracker {
   constructor(id = null) {
     this.reset();
