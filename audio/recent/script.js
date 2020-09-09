@@ -45,7 +45,7 @@ function draw() {
   ctx.save();
   ctx.translate(thing.x, thing.y); // Just use translation again
 
-  // 4. Draw some circles around it
+  // 4. Draw some lines around it
   var angle = 0;
   var degreeSpacing = Math.PI * 2 / thing.deformations.length;
   ctx.beginPath();
@@ -106,8 +106,6 @@ function behaviour() {
     if (!thing.deformations[i]) thing.deformations[i] = 0; // Not yet set
     thing.deformations[i] += d;
   }
-
-  let freqD = getMinMaxAvg(freq);
 
   // ---- Now apply the logic of the thing itself
   // 1. Rotation slows down to zero
