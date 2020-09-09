@@ -41,7 +41,13 @@ function getAvg(data, start = 0, end = data.length) {
   return total / end - start;
 }
 
-
+/**
+ * Records values sent to it via 'add'
+ * Can compute the average, min and max of values seen
+ * Use 'reset' to clear the tracker
+ *
+ * @class Tracker
+ */
 class Tracker {
   constructor(id = null) {
     this.reset();
@@ -78,6 +84,11 @@ class Tracker {
   }
 }
 
+/**
+ * Keeps track of the last X number of values.
+ * Can compute the average of these.
+ * @class SlidingWindow
+ */
 class SlidingWindow {
   constructor(max = 100) {
     this.store = [];
@@ -89,6 +100,9 @@ class SlidingWindow {
   }
 
   add(sample) {
+    if (!Number.isFinite(sample)) return;
+    if (Number.isNaN(sample)) return;
+
     this.store.push(sample);
     if (this.store.length >= this.max) {
       this.store = this.store.slice(1);
@@ -96,15 +110,29 @@ class SlidingWindow {
   }
 
   avg() {
+    let counted = 0;
     let total = 0;
     for (var i = 0; i < this.store.length; i++) {
-      total++;
+      counted++;
+      total += this.store[i];
     }
-    return total / this.store.length;
+    if (counted == 0) return Number.NaN;
+    return total / counted;
   }
 }
 
+/**
+ * Computes the interval between pulses
+ * 'pulse' is called for every pulse, 'calculate' returns average interval
+ * @class IntervalMeter
+ */
 class IntervalMeter {
+  /**
+   *Creates an instance of IntervalMeter.
+   * @param {number} [max=100] Number of pulses used to calculate
+   * @param {number} [pulseLengthMs=0] Minimum pulse speed, useful for filtering out mistaken pulses
+   * @memberof IntervalMeter
+   */
   constructor(max = 100, pulseLengthMs = 0) {
     this.max = max;
     this.pulseLengthMs = pulseLengthMs;

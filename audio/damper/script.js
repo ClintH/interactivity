@@ -73,12 +73,12 @@ function analyse() {
   wave = waveDamper.push(wave); // now send 
 
   // Optional rendering of data
-  visualiser.renderWave(wave, true);
-  visualiser.renderFreq(freq);
+  //visualiser.renderWave(wave, true);
+  //visualiser.renderFreq(freq);
 
   // If you're interested in seeing the average recorded by the damper:
-  //visualiser.renderFreq(freqDamper.getDamper());
-  //visualiser.renderWave(waveDamper.getDamper(), true);
+  visualiser.renderFreq(freqDamper.getDamper());
+  visualiser.renderWave(waveDamper.getDamper(), true);
 
   // Run again
   window.requestAnimationFrame(analyse);
