@@ -11,6 +11,7 @@
  *    sustain: 5000, sustainLevel: 0.9,
  *    decay: 100,
  *    release: 1000, releaseLevel: 0.1,
+ *    amplitude = 1, offset = 0,
  *    looping: true
  * });
  * env.useCallPulse(); // Progress thru envelope with each call to calculate()
@@ -22,7 +23,14 @@
  * 
  * Helper function to ramp up to 1 over 1000ms:
  * ```const rampEnv = EnvelopeGenerator.ramp(1000, 1);```
+ * 
+ * Supplying an `amplitude` will multiply calculated value by this amount - scaling the output.
+ * `offset` raises the minimum value by the provided amount.
+ * 
+ * Pass a function as `onComplete` to get notified when the envelope finishes
+ * 
  * @class EnvelopeGenerator
+ * @author Clint Heyer 2020
  */
 class EnvelopeGenerator {
 
@@ -32,10 +40,10 @@ class EnvelopeGenerator {
    * @static
    * @param {number} period Period of ramp (millis)
    * @param {number} max Value to reach
-   * @returns
+   * @returns {EnvelopeGenerator} EnvelopeGenerator
    * @memberof EnvelopeGenerator
    */
-  static ramp(period, max) {
+  static ramp(period, max = 1) {
     return new EnvelopeGenerator({
       attack: period, attackLevel: max,
       decay: 0, release: 0, sustain: 0, releaseLevel: max
@@ -48,10 +56,10 @@ class EnvelopeGenerator {
    * @param {number} upPeriod Period to reach max (millis)
    * @param {*} max Value to reach
    * @param {*} downPeriod Period to go down to zero again (millis)
-   * @returns
+   * @returns {EnvelopeGenerator} EnvelopeGenerator
    * @memberof EnvelopeGenerator
    */
-  static triangle(upPeriod, max, downPeriod) {
+  static triangle(upPeriod, downPeriod, max = 1) {
     return new EnvelopeGenerator({
       attack: upPeriod, attackLevel: max,
       decay: 0, release: downPeriod, releaseLevel: 0, sustain: 0
@@ -61,21 +69,32 @@ class EnvelopeGenerator {
   /**
    * Creates an instance of EnvelopeGenerator.
    * @param {*} [{ attack = 10, attackLevel = 1,
-   *     sustain = 10, sustainLevel = 0.9,
+   *     sustain = 10, sustainLevel,
    *     decay = 10,
    *     release = 10, releaseLevel = 0,
+   *     amplitude = 1, offset = 0,
    *     looping = false }={}]
    * @memberof EnvelopeGenerator
    */
   constructor({ attack = 10, attackLevel = 1,
-    sustain = 10, sustainLevel = 0.9,
+    sustain = 10, sustainLevel,
     decay = 10,
     release = 10, releaseLevel = 0,
+    amplitude = 1,
+    offset = 0,
+    onComplete,
     looping = false } = {}
   ) {
+    // If sustain level is not defined, use attack level
+    if (sustainLevel === undefined) sustainLevel = attackLevel;
+    // If attack level is not defined, use sustain level
+    if (attackLevel === undefined) attackLevel = sustainLevel;
+    this.onComplete = onComplete;
     this.periods = [attack, decay, sustain, release];
     this.levels = [attackLevel, sustainLevel, sustainLevel, releaseLevel];
     this.stage = 0;
+    this.amplitude = amplitude;
+    this.offset = offset;
     this.looping = looping;
     this.useTimePulse();
   }
@@ -113,11 +132,8 @@ class EnvelopeGenerator {
     this.resetPulse(this.periods[this.stage]);
   }
 
-  step(a, b, amt) {
-    // eg 100, 50, 0.5 = 75
-    let x = (a - b) * amt;
-    if (b < a) return a - x;
-    else return b + x;
+  lerp(a, b, amt) {
+    return a * (1 - amt) + b * amt;
   }
 
   /**
@@ -142,8 +158,19 @@ class EnvelopeGenerator {
   nextStage() {
     this.stage++;
     this.resetPulse(this.periods[this.stage]);
+
+    // If complete, make callback
+    if (this.isComplete()) {
+      if (this.onComplete) this.onComplete(this);
+    }
     return this.levels[this.stage - 1];
   }
+
+  scale(v) {
+    return v * this.amplitude + this.offset;
+  }
+
+
   /**
    * Calculates the envelope value
    *
@@ -152,35 +179,43 @@ class EnvelopeGenerator {
    */
   calculate() {
     if (this.stage >= this.levels.length) {
-      if (!this.looping) return this.levels[this.levels.length - 1];
-      else this.reset();
+      // Finished all stages
+      if (!this.looping) { // Not looping, return release level
+        return this.scale(this.levels[this.levels.length - 1]);
+      } else { // Reset!
+        this.reset();
+      }
     }
 
     let p = this.pulseFunc();
 
     if (p == -1) {
-      // End of period, shift to next stage
+      // End of stage, shift to next
       if (this.periods[this.stage] == -1) {
         // Locked in stage until manual release
-        return this.levels[this.stage];
+        return this.scale(this.levels[this.stage]);
       } else {
-        return this.nextStage();
+        // Move to next stage
+        return this.scale(this.nextStage());
       }
-
     }
 
     let v = 0;
     switch (this.stage) {
       case 0:
-        // attack
-        v = this.levels[this.stage] * p;
+        v = this.levels[this.stage] * p; // attack
         break;
       case 1:
       case 2:
-      case 3:
-        v = this.step(this.levels[this.stage - 1], this.levels[this.stage], p);
+      case 3: // Rest of stages have same logic
+        v = this.lerp(this.levels[this.stage - 1], this.levels[this.stage], p);
+        break;
     }
-    return v;
+    return this.scale(v);
+  }
+
+  isComplete() {
+    return this.stage == 4;
   }
 
   /**
@@ -199,6 +234,9 @@ class EnvelopeGenerator {
         return "Sustain";
       case 3:
         return "Release";
+      case 4:
+        return "Complete";
     }
   }
 }
+export { EnvelopeGenerator }

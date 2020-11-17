@@ -15,6 +15,7 @@
  * 
  * Use `raw()` to get the value without amplitude or offset applied (0->1.0)
  * @class WaveGenerator
+ * @author Clint Heyer 2020
  */
 class WaveGenerator {
   /**
@@ -140,8 +141,7 @@ class WaveGenerator {
     let a = this.func(cycle);
     if (a > 1) a = 1;
     else if (a < 0) a = 0;
-    const b = this.amplitude * a + this.offset;
-    //console.log("cycle: " + cycle + " a: " + a + " amp: " + this.amplitude + " offset: " + this.offset + " final: " + b);
-    return b;
+    return this.amplitude * a + this.offset;
   }
 }
+export { WaveGenerator }

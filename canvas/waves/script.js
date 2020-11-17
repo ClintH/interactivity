@@ -1,93 +1,91 @@
+import { EnvelopeGenerator } from './EnvelopeGenerator.mjs'
+import { WaveGenerator } from './WaveGenerator.mjs'
+const ballSize = 10;
+/** @type {HTMLCanvasElement} */
+let canvas = document.getElementById('canvas');
+
+let wave = new WaveGenerator();
+wave.useSine();
+
+// Try different wave shapes:
+// wave.useTriangle();
+// wave.useRamp();
+// wave.useSawtooth();
+// wave.useSquare();
+
+// Synchronise wave with time
+//  ie: Duration of wave cycle is 2 seconds
+wave.useTimePulse(2000);
+
+// Or: synchronise manually based on pulses
+//  ie: Duration of a wave cycle is calling 'calculate' 100 times.
+//      In this sketch this corresponds to the speed of drawing
+//wave.useCallPulse(100);
+
+// Make a counter function that counts up slowly, resetting at 1
+// this is used to shift the hue of dots over time
+let colourTick = counter(0.001);
 
 
-
-
-// let wave1 = new WaveGenerator();
-// wave1.useSine();
-
-// let wave2 = new WaveGenerator();
-// wave2.useSine();
-// wave2.useTimePulse(500);
-
-// const env = new EnvelopeGenerator({
-//   attack: 1000, attackLevel: 1.0,
-//   sustain: 5000, sustainLevel: 0.9,
-//   decay: 100,
-//   release: 1000, releaseLevel: 0.1,
-//   looping: true
-// });
-
-const env = EnvelopeGenerator.triangle(1000, 1, 2000);
-/**
- * Draw result
- *
- * @param {HTMLCanvasElement} canvas
- * @param {CanvasRenderingContext2D} ctx
- */
-function draw(canvas, ctx) {
-
-  // Copy and paint entire canvas a little to the left
-  const shiftHorizBy = 5;
-  ctx.drawImage(canvas,
-    0, 0, canvas.width, canvas.height,
-    -shiftHorizBy, 0, canvas.width - shiftHorizBy, canvas.height);
-
-  // Fade out the entire canvas
-  ctx.fillStyle = 'rgba(255,255,255,0.1)';
-  ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-
-  let size = 10;
-  ctx.fillStyle = 'black';
-
-  ctx.save();
-
-  const x = canvas.width - size;
-  const y = canvas.height * (1 - env.calculate());
-  // const y = wave1.blend(0.5, wave2);
-  //const y = 0;
-  ctx.translate(x, y);
-
-  // Draw circle roughly in the middle
-  ctx.beginPath();
-  ctx.arc(-(size / 2), -(size / 2), size, 0, 2 * Math.PI);
-  ctx.fill();
-
-  ctx.restore();
+function counter(delta, startAt = 0, resetAt = 1) {
+  let v = startAt;
+  return function () {
+    v += delta;
+    if (v > resetAt) v = startAt;
+    return v;
+  };
+}
+function computeColour(percentage) {
+  if (percentage < 0) percentage = 0;
+  if (percentage > 1) percentage = 1;
+  return 'hsl(' + Math.floor(360 * percentage) + ',100%,50%)';
 }
 
-
-
-// Main draw loop
-function drawLoop() {
-  let canvas = document.getElementById('canvas');
+// Draw a dot corresponding to wave value
+function draw() {
+  /** @type {CanvasRenderingContext2D} */
   let ctx = canvas.getContext('2d');
-  draw(canvas, ctx);
-  window.requestAnimationFrame(drawLoop);
+  ctx.filter = 'blur(2px)'; /* added sizzle. Doesn't work in Safari */
+
+  // Copy and paint entire canvas a little to the left
+  //  this produces the scrolling, smearing effect
+  ctx.drawImage(canvas,
+    0, 0, canvas.width, canvas.height,
+    -ballSize / 2, 0, canvas.width - ballSize / 2, canvas.height);
+
+  ctx.filter = 'none';
+
+  // Fade out the entire canvas
+  ctx.fillStyle = 'rgba(255,255,255,0.01)'; // change opacity prevent fade out
+  ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
+  const v = wave.calculate(); // scale is 0->1
+  const vInPixels = (1 - v) * canvas.height; // invert and apply to height, now 800->0 for example
+
+  const x = canvas.width - ballSize;
+  const y = vInPixels;
+
+  // Increment and compute HSL colour
+  ctx.fillStyle = computeColour(colourTick());
+
+  // Draw circle at coordinates
+  ctx.beginPath();
+  ctx.arc(x, y, ballSize, 0, 2 * Math.PI);
+  ctx.fill();
+
+  window.requestAnimationFrame(draw); // Run draw again
 }
 
 function onDocumentReady() {
-  // Set up event listeners
+  const onResize = function () {
+    canvas.width = document.body.offsetWidth;
+    canvas.height = document.body.offsetHeight;
+  }
   window.addEventListener('resize', onResize);
 
-  onResize(); // Manually trigger first time
-  window.requestAnimationFrame(drawLoop);
+  onResize(); // Trigger event handler to match canvas size to window
+  window.requestAnimationFrame(draw); // Kick off draw loop
 }
 
-// Resize canvas to match window
-function onResize() {
-  var canvas = document.getElementById('canvas');
-  document.addEventListener('click', () => {
-    env.release();
-  });
-  canvas.width = document.body.offsetWidth;
-  canvas.height = document.body.offsetHeight;
-  // wave1.amplitude = canvas.height;
-  // wave1.offset = 0;
-  // wave2.amplitude = wave1.amplitude;
-}
-
-if (document.readyState != 'loading') {
-  onDocumentReady();
-} else {
-  document.addEventListener('DOMContentLoaded', onDocumentReady);
-}
+// Initialise
+onDocumentReady();
