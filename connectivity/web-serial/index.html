@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>web-serial</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <h1>web-serial</h1>
+  <button id="btnOpen">Open</button>
+  <button id="btnClose">Close</button>
+
+  <h2>Send</h2>
+  <form id="frmSend">
+    <input type="text" value='{"pulses":5,"interval":10}' id="txtSend"></input>
+    <input type="submit" value="Send">
+  </form>
+
+  <h2>Received</h2>
+  <span id="lastMsg">(nothing yet)</span>
+
+  <script type="module" src="script.js"></script>
+</body>
+
+</html>
