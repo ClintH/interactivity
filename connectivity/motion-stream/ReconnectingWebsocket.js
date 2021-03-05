@@ -1,7 +1,4 @@
 "use strict";
-;
-;
-;
 // Source: https://github.com/pladaria/reconnecting-websocket
 var isWebSocket = function (constructor) {
     return constructor && constructor.CLOSING === 2;
@@ -9,15 +6,17 @@ var isWebSocket = function (constructor) {
 var isGlobalWebSocket = function () {
     return typeof WebSocket !== 'undefined' && isWebSocket(WebSocket);
 };
-var getDefaultOptions = function () { return ({
-    constructor: isGlobalWebSocket() ? WebSocket : null,
-    maxReconnectionDelay: 10000,
-    minReconnectionDelay: 1500,
-    reconnectionDelayGrowFactor: 1.3,
-    connectionTimeout: 4000,
-    maxRetries: Infinity,
-    debug: false,
-}); };
+var getDefaultOptions = function () {
+    return ({
+        constructor: isGlobalWebSocket() ? WebSocket : null,
+        maxReconnectionDelay: 10000,
+        minReconnectionDelay: 1500,
+        reconnectionDelayGrowFactor: 1.3,
+        connectionTimeout: 4000,
+        maxRetries: Infinity,
+        debug: false,
+    });
+};
 var bypassProperty = function (src, dst, name) {
     Object.defineProperty(dst, name, {
         get: function () { return src[name]; },
@@ -82,19 +81,21 @@ var ReconnectingWebsocket = function (url, protocols, options) {
      * Not using dispatchEvent, otherwise we must use a DOM Event object
      * Deferred because we want to handle the close event before this
      */
-    var emitError = function (code, msg) { return setTimeout(function () {
-        var err = new Error(msg);
-        err.code = code;
-        if (Array.isArray(listeners.error)) {
-            listeners.error.forEach(function (_a) {
-                var fn = _a[0];
-                return fn(err);
-            });
-        }
-        if (ws.onerror) {
-            ws.onerror(err);
-        }
-    }, 0); };
+    var emitError = function (code, msg) {
+        return setTimeout(function () {
+            var err = new Error(msg);
+            err.code = code;
+            if (Array.isArray(listeners.error)) {
+                listeners.error.forEach(function (_a) {
+                    var fn = _a[0];
+                    return fn(err);
+                });
+            }
+            if (ws.onerror) {
+                ws.onerror(err);
+            }
+        }, 0);
+    };
     var handleClose = function () {
         log('handleClose', { shouldRetry: shouldRetry });
         retriesCount++;
@@ -187,7 +188,11 @@ var ReconnectingWebsocket = function (url, protocols, options) {
         }
     };
     this.send = function (data) {
-        ws.send(data);
+        if (ws.readyState == 1) {
+            ws.send(data);
+        } else {
+            throw 'Websocket not ready (' + ws.readyState + ')';
+        }
     };
     this.addEventListener = function (type, listener, options) {
         if (Array.isArray(listeners[type])) {
@@ -213,4 +218,4 @@ var ReconnectingWebsocket = function (url, protocols, options) {
         ws.removeEventListener(type, listener, options);
     };
 };
-window.ReconnectingWebsocket = ReconnectingWebsocket;
+export { ReconnectingWebsocket }

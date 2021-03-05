@@ -4,8 +4,12 @@
   "description": "Demo of websockets",
   "version": "0.0.1",
   "private": true,
+  "bin": {
+    "server": "./server.js"
+  },
+  "main": "server.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "node server.js"
   },
   "dependencies": {
     "body-parser": "~1.19.0",
@@ -13,11 +17,14 @@
     "debug": "~4.3.1",
     "express": "~4.17.1",
     "express-ws": "^4.0.0",
+    "localtunnel": "^2.0.1",
     "middleware-static-livereload": "1.2.17",
     "morgan": "~1.10.0",
     "node-dev": "^6.4.0",
     "pug": "3.0.2",
+    "qrcode-terminal": "^0.12.0",
     "serve-favicon": "~2.5.0",
-    "ws": "^7.4.3"
+    "ws": "^7.4.3",
+    "yargs": "^16.2.0"
   }
 }

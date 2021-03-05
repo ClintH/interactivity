@@ -6,6 +6,10 @@ It also demonstrates creating a unique id for this running code, and tagging all
 
 There's also `websocket-playground` if you want to test sending/receiving messages.
 
+# Setup
+
+You'll need to have `websocket-server` set up and running. Serve your sketches via that server, not VS Code's "live server".
+
 # Read more
 
 * [WebSockets](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_client_applications)

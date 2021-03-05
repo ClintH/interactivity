@@ -8,6 +8,9 @@ body {
   background-color: whitesmoke;
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
 }
+button {
+  padding: 1rem;
+}
 h1 {
   color: darkred;
 }
@@ -27,6 +30,6 @@ a:hover {
 #last.frozen {
   background-color: lightblue;
 }
-#log .error {
+.error {
   color: red;
 }
