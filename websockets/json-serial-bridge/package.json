@@ -21,7 +21,7 @@
     "middleware-static-livereload": "1.2.7",
     "morgan": "~1.9.0",
     "node-dev": "^4.0.0",
-    "pug": "2.0.3",
+    "pug": "3.0.1",
     "serialport": "^7.1.5",
     "serve-favicon": "~2.5.0",
     "ws": "^7.1.2"
