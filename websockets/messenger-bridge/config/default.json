@@ -1,6 +1,0 @@
-{
-  "appSecret": "APP_SECRET",
-  "pageAccessToken": "PAGE_ACCESS_TOKEN",
-  "validationToken": "SOMETHING_RANDOM",
-  "serverURL": "https://YOURNGROKID.ngrok.io/webhook"
-}
