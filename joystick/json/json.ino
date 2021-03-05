@@ -4,7 +4,7 @@
 #include <ArduinoJson.h>
 #define pinX 0
 #define pinY 1
-#define pinSwitch 12
+#define pinSwitch 3
 
 void setup() {
   // Need to set up digital pin as an input

@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>websocket playground</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/styles/default.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/highlight.min.js"></script>
+</head>
+
+<body>
+  <header>
+    <h1>websockets playground</h1>
+    <div class="status" id="mainStatus">Starting...</div>
+  </header>
+  <div id="container">
+    <section>
+      <h2>Send JSON</h2>
+      <pre><code id="txtJson" contenteditable="true" class="json">
+{
+  "colour": "blue",
+  "velocity": 10,
+  "isRaining": true
+}
+</code></pre>
+      <div class="status hidden" id="jsonStatus"></div><br />
+      <button id="btnSendJson">Send</button>
+    </section>
+    <section>
+      <h2>Send text</h2>
+      <input value="Hello" type="text" id="txtRaw">
+      <br />
+      <button id="btnSendText">Send</button>
+    </section>
+    <section>
+      <h2>Received</h2>
+      <button id="btnClear">Clear</button>
+      <div id="msgLog"></div>
+    </section>
+  </div>
+  <script type="module" src="script.js"></script>
+</body>
+
+</html>

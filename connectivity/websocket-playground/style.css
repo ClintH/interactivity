@@ -1,0 +1,45 @@
+* {
+  box-sizing: border-box;
+}
+
+html,body {
+  margin:0;
+  padding: 0;
+}
+
+body {
+  background-color: rgb(209, 224, 246);
+  padding: 2rem;
+  height: 100vh;
+  width: 100vw;
+  font-family: 'Roboto Slab', 'Roboto','Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+}
+
+.status {
+  padding: 1rem;
+  background-color: aliceblue;
+  display: inline-block;
+}
+.hidden {
+  display: none;
+}
+
+pre {
+  margin: 0;
+}
+
+#container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+section {
+  border: 1px solid black;
+  padding: 1rem;
+  min-width: 20rem;
+}
+
+.error {
+  color: red;
+}

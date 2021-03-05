@@ -5,21 +5,40 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>web-serial</title>
+  <title>connectivity sketches</title>
+  <link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet" />
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-  <h1>web-serial</h1>
+  <h1>connectivity sketches</h1>
+  <h2>serial</h2>
   <p>There are two examples using the Chrome Web Serial API to talk to a microcontroller. As always, check the README.md
     file within each folder. Serial.mjs is a helper class to simplify access to the API, and is used by
     both examples.</p>
-  <h2><a href="web-serial-simple">web-serial-simple</a></h2>
-  This demonstrates sending text back and forth in a simple way. Good enough for getting a sensor reading into the
-  browser, or sending a command to alter the behaviour of a microcontroller.
-  <h2><a href="web-serial">web-serial</a></h2>
-  This example sends data back and forth as JSON objects. This allows for much richer data exchange, but is a little
-  more complicated on the microcontroller side.
+  <ul>
+    <li><a href="web-serial-simple/">web-serial-simple</a>: This demonstrates sending text back and forth in a simple
+      way. Good enough for getting a sensor reading into the
+      browser, or sending a command to alter the behaviour of a microcontroller.</li>
+    <li><a href="web-serial-json/">web-serial-json</a>: This example sends data back and forth as JSON objects. This
+      allows for
+      much richer data exchange, but is a little
+      more complicated on the microcontroller side.</li>
+    <li><a href="web-serial-websocket/">web-serial-websocket</a>: This re-broadcasts JSON from a microcontroller via
+      websockets.
+
+  </ul>
+
+  <h2>websockets</h2>
+  <ul>
+    <li><a href="websocket-skeleton/">websocket-skeleton</a>: Simple demonstration of sending/receiving data via
+      websocket</li>
+    <li><a href="websocket-playground/">websocket-playground</a>: Try out sending and receiving data. Useful for
+      testing.
+    </li>
+    <li>websocket-server: A Nodejs websocket server</li>
+
+  </ul>
 </body>
 
 </html>

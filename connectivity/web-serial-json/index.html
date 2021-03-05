@@ -5,24 +5,25 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>websockets-skeleton</title>
+  <title>web-serial-json</title>
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-  <h1>websockets-skeleton</h1>
+  <h1>web-serial-json</h1>
+  <button id="btnOpen">Open</button>
+  <button id="btnClose">Close</button>
+
   <h2>Send</h2>
-  <form id="sendForm">
-    <input type="text" value="Hello" id="sendThis"></input>
+  <form id="frmSend">
+    <input type="text" value='{"pulses":5,"interval":10}' id="txtSend"></input>
     <input type="submit" value="Send">
   </form>
-  <div id="sendObject">Hover over me to send event data</div>
 
   <h2>Received</h2>
-  <div id="lastMsg">(nothing)</div>
+  <span id="lastMsg">(nothing yet)</span>
 
-  <script src="lib/reconnecting-websocket.js"></script>
-  <script src="script.js"></script>
+  <script type="module" src="script.js"></script>
 </body>
 
 </html>

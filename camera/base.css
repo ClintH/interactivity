@@ -7,7 +7,7 @@ body {
 
 body {
   background-color:rgb(98.8%, 89.4%, 92.5%);
-  font-family: system, -apple-system, ".SFNSText-Regular", "San Francisco", "Roboto", "Segoe UI", "Helvetica Neue", "Lucida Grande", sans-serif;
+  font-family: 'Roboto Slab', serif;system, -apple-system, ".SFNSText-Regular", "San Francisco", "Roboto", "Segoe UI", "Helvetica Neue", "Lucida Grande", sans-serif;
   color: rgb(21.6%, 27.8%, 31%);
 }
 

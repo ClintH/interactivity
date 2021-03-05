@@ -1,4 +1,4 @@
-import { Serial } from "../Serial.mjs";
+import { Serial } from "./Serial.js";
 
 let lastMsgEl = document.getElementById('lastMsg');
 const serial = new Serial();

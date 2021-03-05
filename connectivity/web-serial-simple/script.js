@@ -1,11 +1,10 @@
-import { Serial } from "../Serial.mjs";
+import { Serial } from "./Serial.js";
 
 let lastMsgEl = document.getElementById('lastMsg');
 
 document.getElementById('frmSend').addEventListener('submit', (e) => {
   e.preventDefault();
   const whatToSend = document.getElementById('txtSend').value;
-  console.log('Send? ' + whatToSend);
   serial.println(whatToSend);
 });
 
