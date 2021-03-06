@@ -5,11 +5,43 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <link rel="stylesheet" href="mobile.css">
+  <link rel="stylesheet" href="base.css">
   <title>motion-stream sender</title>
 </head>
 
 <body>
+  <style>
+    #last {
+      font-family: Menlo, Consolas, Monaco, Liberation Mono, Lucida Console,
+        monospace;
+    }
+
+    #last>table {
+      border: 1px solid var(--spotL);
+      width: 100%;
+    }
+
+    #last td {
+      width: 3rem;
+    }
+
+    #last.frozen {
+      background-color: lightblue;
+    }
+
+    #status {
+      padding: 1rem;
+      font-size: 80%;
+    }
+
+    .error {
+      color: red;
+    }
+
+    button {
+      font-size: 200%;
+    }
+  </style>
   <h1>motion-stream sender</h1>
   <p>
     This sketch should be loaded on a device with motion sensors.
@@ -19,7 +51,6 @@
   <button id="btnFreeze">Freeze</button>
 
   <div id="last"></div>
-  <div id="log"></div>
   <script type="module" src="mobile.js"></script>
 </body>
 

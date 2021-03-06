@@ -129,17 +129,17 @@ function setStatus(msg, isError = false) {
 function showData(m) {
   if (frozen) return;
   try {
-    let html = 'accel';
+    let html = '<h3>accel (x,y,z)</h3>';
     html += '<table><tr><td>' + m.accel.x.toFixed(3) + '</td><td>' + m.accel.y.toFixed(3) + '</td><td>' + m.accel.z.toFixed(3) + '</tr></table>';
     html += '</table>';
 
-    html += 'rot';
+    html += '<h3>rot (alpha, beta, gamma)</h3>';
     html += '<table><tr><td>' + m.rot.alpha.toFixed(3) + '</td><td>' + m.rot.beta.toFixed(3) + '</td><td>' + m.rot.gamma.toFixed(3) + '</tr></table>';
 
-    html += 'rotMotion';
+    html += '<h3>rotMotion (alpha, beta, gamma)</h3>';
     html += '<table><tr><td>' + m.rotMotion.alpha.toFixed(3) + '</td><td>' + m.rotMotion.beta.toFixed(3) + '</td><td>' + m.rotMotion.gamma.toFixed(3) + '</tr></table>';
 
-    html += 'accelGrav';
+    html += '<h3>accelGrav (x,y,z)</h3>';
     html += '<table><tr><td>' + m.accelGrav.x.toFixed(3) + '</td><td>' + m.accelGrav.y.toFixed(3) + '</td><td>' + m.accelGrav.z.toFixed(3) + '</tr></table>';
     html += '</table>';
     document.getElementById('last').innerHTML = html;

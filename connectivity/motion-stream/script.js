@@ -32,17 +32,17 @@ function onData(o) {
 
 
 function showData(o) {
-  let html = 'accel';
+  let html = '<h3>accel (x,y,z)</h3>';
   html += '<table><tr><td>' + o.accel.x.toFixed(3) + '</td><td>' + o.accel.y.toFixed(3) + '</td><td>' + o.accel.z.toFixed(3) + '</tr></table>';
   html += '</table>';
 
-  html += 'rot';
+  html += '<h3>rot (alpha, beta, gamma)</h3>';
   html += '<table><tr><td>' + o.rot.alpha.toFixed(3) + '</td><td>' + o.rot.beta.toFixed(3) + '</td><td>' + o.rot.gamma.toFixed(3) + '</tr></table>';
 
-  html += 'rotMotion';
+  html += '<h3>rotMotion (alpha, beta, gamma)</h3>';
   html += '<table><tr><td>' + o.rotMotion.alpha.toFixed(3) + '</td><td>' + o.rotMotion.beta.toFixed(3) + '</td><td>' + o.rotMotion.gamma.toFixed(3) + '</tr></table>';
 
-  html += 'accelGrav';
+  html += '<h3>accelGrav (x,y,z)</h3>';
   html += '<table><tr><td>' + o.accelGrav.x.toFixed(3) + '</td><td>' + o.accelGrav.y.toFixed(3) + '</td><td>' + o.accelGrav.z.toFixed(3) + '</tr></table>';
   html += '</table>';
   document.getElementById('last').innerHTML = html;
