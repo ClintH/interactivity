@@ -28,7 +28,7 @@ class Serial {
    */
   constructor(baudRate = 19200) {
     this.baudRate = baudRate;
-    if (!'serial' in navigator) throw new Error('Serial API not supported');
+    if (typeof navigator.serial === 'undefined') throw 'Serial API not supported or enabled? Make sure you have enabled experimental flags';
 
     navigator.serial.addEventListener('connect', (e) => {
       // Reconnect?

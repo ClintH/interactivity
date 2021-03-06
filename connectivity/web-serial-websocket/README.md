@@ -1,8 +1,14 @@
 # web-serial-websocket
 
-This only works in Chrome desktop. It will probably work in other Chrome-based browsers. Remember serial ports cannot be shared. So while your browser is accessing the port you cannot upload firmware or use the serial monitor.
+This only works in Chrome desktop. It will probably work in other Chrome-based browsers. 
+
+At the time of writing, you need to enable Chrome's experimental web features: chrome://flags/#enable-experimental-web-platform-features
+
+Remember serial ports cannot be shared. So while your browser is accessing the port you cannot upload firmware or use the serial monitor.
 
 This sketch is a mash-up of `web-serial-json` and `websocket-skeleton`. Make sure you've tried and understood them first. In this sketch, all received data is re-broadcast over websockets. This allows a different sketch running on a phone to interact with a microcontroller connected via USB to a laptop.
+
+You can also also [fork on Glitch](https://glitch.com/edit/#!/ch-web-serial-websocket)
 
 # Microcontroller
 
