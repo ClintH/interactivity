@@ -1,26 +1,49 @@
-* {
-  box-sizing: border-box;
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
 }
-
-html,body {
+html,
+body {
   margin:0;
-  padding: 0;
+  padding:0;
 }
-
+html {
+  box-sizing: border-box;
+  --spotLL: #FFEBE7;
+  --spotL: #FFC0BE;
+  --spot: #FF82A9;
+  --alt: #7F95D1;
+  --black: #12152B;
+  --white: #F4F1F0;
+}
 
 body {
-  background-color: whitesmoke;
+  background-color: var(--white);
+  width: 100vw;
   padding: 2rem;
   height: 100vh;
-  width: 100vw;
-  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+  color: var(--black);
+  font-family: -apple-system, BlinkMacSystemFont, avenir next, avenir, helvetica neue, helvetica, Ubuntu, roboto, noto, segoe ui, arial, sans-serif;
 }
 h1 {
-  color: darkred;
+  color: var(--spot);
 }
-a, a:link, a:visited {
-  color: darkred;
+h2 {
+  color: var(--spot);
+}
+a,
+a:link,
+a:visited {
+  color: var(--alt);
 }
 a:hover {
   color: black;
+  text-decoration: underline;
+}
+
+h1 > a:link,
+h1 > a:visited {
+  text-decoration: none;
+  color: var(--spotL);
 }

@@ -3,7 +3,7 @@ const ourId = Date.now().toString(36) + Math.random().toString(36).substr(2);
 
 // By default it will try to connect to same server it is loaded from
 // In some cases, you might need to put in a custom address.
-const url = 'ws://' + location.host + '/ws';
+const url = (location.protocol === 'http:' ? 'ws://' : 'wss://') + location.host + '/ws';
 const socket = new ReconnectingWebsocket(url);
 
 // Received a message

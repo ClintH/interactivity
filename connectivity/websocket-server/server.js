@@ -11,7 +11,7 @@ const args = require('yargs/yargs')(process.argv.slice(2))
 // ----
 // Config
 const port = args.port || 4040;
-const quiet = args.quiet || true; // If true, dumps messages to console
+const quiet = args.quiet || true; // If true, doesn't echo WS messages
 const tunnel = args.tunnel || false;
 const qr = args.qr || false;
 // ---

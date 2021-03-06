@@ -5,7 +5,7 @@ const mainStatus = document.getElementById('mainStatus');
 const txtJson = document.getElementById('txtJson');
 const jsonStatus = document.getElementById('jsonStatus');
 const msgLog = document.getElementById('msgLog');
-const url = 'ws://' + location.host + '/ws';
+const url = (location.protocol === 'http:' ? 'ws://' : 'wss://') + location.host + '/ws';
 const socket = new ReconnectingWebsocket(url);
 
 function showError(msg, el) {

@@ -1,7 +1,7 @@
 import { Serial } from "./Serial.js";
 import { ReconnectingWebsocket } from "./ReconnectingWebsocket.js";
 const ourId = Date.now().toString(36) + Math.random().toString(36).substr(2);
-const url = 'ws://' + location.host + '/ws';
+const url = (location.protocol === 'http:' ? 'ws://' : 'wss://') + location.host + '/ws';
 const socket = new ReconnectingWebsocket(url);
 const serial = new Serial();
 let lastSerialMsg = '';

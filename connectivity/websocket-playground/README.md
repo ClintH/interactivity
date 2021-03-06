@@ -4,6 +4,7 @@ The playground allows you to manually send JSON text, with results shown in the 
 
 The playground sketches are not meant for extending further, use the skeleton as a starting point.
 
+You can try it out on [Glitch](https://glitch.com/edit/#!/ch-websockets-skeleton)
 
 # Read more
 

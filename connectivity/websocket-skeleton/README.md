@@ -6,6 +6,8 @@ It also demonstrates creating a unique id for this running code, and tagging all
 
 There's also `websocket-playground` if you want to test sending/receiving messages.
 
+You can try it out on [Glitch](https://glitch.com/edit/#!/ch-websockets-skeleton)
+
 # Setup
 
 You'll need to have `websocket-server` set up and running. Serve your sketches via that server, not VS Code's "live server".

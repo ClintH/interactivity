@@ -2,8 +2,7 @@
 
 This is a basic websocket server example. The server (`app.js`) runs in the Node.js environment, rather than browser. Whenever it receives a message, it distributes it to all other connected clients.
 
-
-A hosted version of this is on [Glitch for you to fork and modify](https://glitch.com/edit/#!/ch-websockets-skeleton)
+You can try it out on [Glitch](https://glitch.com/edit/#!/ch-websockets-skeleton)
 
 # Setup 
 
