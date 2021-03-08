@@ -1,32 +1,57 @@
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+html,
+body {
+  margin:0;
+  padding:0;
+}
 html {
   box-sizing: border-box;
-}
-html, body {
-  height: 100%;
-  padding: 0; margin: 0;
-  overflow: hidden;
+  --spotLL: #FFEBE7;
+  --spotL: #FFC0BE;
+  --spot: #FF82A9;
+  --alt: #7F95D1;
+  --black: #12152B;
+  --white: #F4F1F0;
 }
 
 body {
-  padding: 1rem;
+  background-color: var(--white);
+  width: 100vw;
+  padding: 2rem;
+  height: 100vh;
+  color: var(--black);
+  font-family: -apple-system, BlinkMacSystemFont, avenir next, avenir, helvetica neue, helvetica, Ubuntu, roboto, noto, segoe ui, arial, sans-serif;
+}
+h1 {
+  color: var(--spot);
+}
+h2 {
+  color: var(--spot);
+}
+a,
+a:link,
+a:visited {
+  color: var(--alt);
+}
+a:hover {
+  color: black;
+  text-decoration: underline;
 }
 
-*, *:before, *:after {
-  box-sizing: inherit;
+h1 > a:link,
+h1 > a:visited {
+  text-decoration: none;
+  color: var(--spotL);
 }
 
-label {
-  display: block;
-  padding: 1rem;
+#log {
+  padding-top: 1rem;
 }
 
-#fruits {
-  margin-top: 2rem;
-  
-}
-
-.fruit {
-  display: inline-block;
-  border: 1px solid grey;
-  margin: 1rem;
+#log.error {
+  color: red;
 }

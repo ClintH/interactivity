@@ -1,19 +1,33 @@
 const fruits = [];
+const baseUrl = 'https://api.jsonbin.io/v3/';
+
+// Generate a key by signing in to JSONBin and going to 'API Keys' (https://jsonbin.io/api-keys)
+const jsonBinKey = '';
+
+const headers = {
+  'X-Master-Key': jsonBinKey,
+  'X-Bin-Private': true,
+  'Content-Type': 'application/json'
+ };
 
 function onDocumentReady() {
-  fetchFromServer();
 
+  if (jsonBinKey == '') {
+    log('Read the README.md', true);
+    throw new Error('Read the README.md');
+  }
+  fetchFromServer();
+ 
   document.getElementById('saveToServer').addEventListener('click', saveToServer);
 
   document.getElementById('fruitForm').addEventListener('submit', e=> {
     e.preventDefault(); // Prevent form from submitting
     
     // Grab values from form
-    let form = e.target;
-    
-    let fruitName = form.elements['fruit'].value;
-    let colour = form.elements['colour'].value;
-    let smoothie = form.elements['smoothie'].checked;
+    const form = e.target;
+    const fruitName = form.elements['fruit'].value;
+    const colour = form.elements['colour'].value;
+    const smoothie = form.elements['smoothie'].checked;
   
     let fruit = {
       name: fruitName, colour: colour, smoothie: smoothie
@@ -50,12 +64,10 @@ function saveToServer() {
 
 function updateBin(bin) {
   // Note we access the bin by the URL
-  fetch('https://api.jsonbin.io/b/' + bin, {
+  fetch(baseUrl + 'b/' + bin, {
     method: 'PUT', // HTTP verb is 'PUT'
     body: JSON.stringify(fruits), 
-    headers: new Headers({
-      'Content-Type': 'application/json'
-    })
+    headers: headers
   }).then(res => res.json())
   .catch(error => console.error('Error:', error))
   .then(response => {
@@ -64,39 +76,55 @@ function updateBin(bin) {
 }
 
 function createBin() {
-  fetch('https://api.jsonbin.io/b', {
+  fetch(baseUrl + 'b/', {
     method: 'POST', // HTTP verb is 'POST'
     body: JSON.stringify(fruits), 
-    headers: new Headers({
-      'Content-Type': 'application/json'
-    })
+    headers: headers
   }).then(res => res.json())
   .catch(error => console.error('Error:', error))
   .then(response => {
     console.log('Success:', response);
 
     // Save the server-generated id so we can update it next time
-    localStorage.setItem('bin', response.id);
+    const binId = response.metadata.id;
+    log(`Created new bin ${binId}`);
+    localStorage.setItem('bin', binId);
   });
 }
 
+function log(msg, isError = false) {
+  const el = document.getElementById('log');
+  el.innerText = msg;
+  if (isError) {
+    console.error(msg);
+    el.classList.add('error');
+  } else {
+    console.log(msg);
+    el.classList.remove('error');
+  }
+}
+
 function fetchFromServer() {
+  log('Fetching from server');
   const bin = localStorage.getItem('bin');
-  if (bin == null) {
-    console.log("No bin id available so far");
+  if (!bin) {
+    log("No bin id available yet");
     return;
   }
 
   // The URL we construct here is according to the JSONbin docs for
   // getting the latest version of a bucket
-  fetch('https://api.jsonbin.io/b/' + bin + "/latest")
+  fetch(baseUrl + 'b/' + bin + "/latest", { headers: headers})
   .then(res => res.json())
   .then(res => {
     console.log("Retrieved from " +  bin + ": ");
     console.log(res);
-    for (fruit of res)
+    for (fruit of res.record)
       fruits.push(fruit);
     updateDisplay();
+    log('');
+  }).catch(e => {
+    log(e, true);
   });
 }
 

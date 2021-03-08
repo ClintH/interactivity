@@ -1,36 +1,58 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" /> 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <link rel="stylesheet" href="style.css">
-    <title>data - jsonbin</title>
-  </head>
-  <body>
-    <h1>jsonbin</h1>
-    <form id="fruitForm">
-      <label>Fruit:
-        <input type="text" name="fruit" value="Banana">
-      </label>
-      <label>Colour:
-        <select name="colour">
-          <option>Red</option>
-          <option>Yellow</option>
-          <option>Green</option>
-          <option>Orange</option>
-          <option>Black</option>
-          <option>White</option>
-        </select>
-      </label>
-      <label>Good smoothie ingredient:
-        <input type="checkbox" name="smoothie">
-      </label>
-      <input type="submit" value="Add">
-    </form>
-    <div id="fruits">
 
-    </div>
-    <button id="saveToServer">Save to server</button>
-    <script src="script.js"></script>
-  </body>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css">
+  <title>data - jsonbin</title>
+</head>
+
+<body>
+  <style>
+    label {
+      display: block;
+      padding: 1rem;
+    }
+
+    #fruits {
+      margin-top: 2rem;
+
+    }
+
+    .fruit {
+      padding: 1rem;
+      display: inline-block;
+      border: 1px solid grey;
+      margin: 1rem;
+    }
+  </style>
+  <h1>jsonbin</h1>
+  <form id="fruitForm">
+    <label>Fruit:
+      <input type="text" name="fruit" value="Banana">
+    </label>
+    <label>Colour:
+      <select name="colour">
+        <option>Red</option>
+        <option>Yellow</option>
+        <option>Green</option>
+        <option>Orange</option>
+        <option>Black</option>
+        <option>White</option>
+      </select>
+    </label>
+    <label>Good smoothie ingredient:
+      <input type="checkbox" name="smoothie">
+    </label>
+    <input type="submit" value="Add">
+  </form>
+  <div id="fruits">
+
+  </div>
+  <button id="saveToServer">Save to server</button>
+  <div id="log"></div>
+  <script src="script.js"></script>
+</body>
+
 </html>

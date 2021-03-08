@@ -1,6 +1,6 @@
 # jsonbin
 
-Demonstrates saving data to JSONbin and fetching it again.
+Demonstrates saving data to JSONbin and fetching it again. It's necessary to sign up for an account and make an [API Key](https://jsonbin.io/api-keys), and set that to `jsonBinKey`.
 
 Try adding some fruits, and then click 'Save to server'. Reload the page and you'll see the previously saved fruits appear.
 
