@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>path-move</title>
+  <link rel="stylesheet" href="base.css">
+  <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+  <h1>Move element along path</h1>
+
+  <!-- Use an vector tool to create SVG data. This is a good one: https://boxy-svg.com/app-->
+  <!-- Here we have a path and circle. Note each has an id attribute -->
+  <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+    preserveAspectRatio="xMidYMid meet" viewBox="0 0 640 640" width="640" height="640">
+    <path id="path" style="fill:none; stroke: rgb(0, 0, 0);"
+      d="M 105.19 140.871 C 92.369 97.312 121.872 80.321 162.187 91.288 C 190.121 98.887 215.762 85.448 239.11 50.973 C 259.253 21.23 273.155 33.432 316.96 95.922 C 338.199 126.22 322.443 145.065 233.55 144.115 C 200.093 143.758 187.89 161.676 165.431 198.796 C 150.941 222.745 128.389 205.599 105.19 140.871 Z">
+    </path>
+    <circle id="dot" r="30" cy="0" cx="0" id="dot" style="fill: #d87373" />
+  </svg>
+  <button id="domElem">Test</button>
+  <script src="script.js" type="module"></script>
+</body>
+
+</html>
