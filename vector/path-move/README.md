@@ -4,3 +4,7 @@ Shows how to move a SVG element or DOM element around a SVG-defined path. Use a 
 
 
 * [Boxy](https://boxy-svg.com/app) is a quick online tool for this.
+
+# Read more
+
+* [A quick guide to SVG](https://flaviocopes.com/svg/)
