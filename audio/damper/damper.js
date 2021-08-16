@@ -1,3 +1,19 @@
+/**
+ * Dampens input array data.
+ * 
+ * Assumes input data is same array length as dampening values.
+ * Dampening values can be set manually, or by 'sampling' values for some time.
+ * 
+ * Eg:
+ * const d = new Damper();
+ * f.startSampling();
+ * ...
+ * Do this a few times:
+ * const dampened = d.push(someData);
+ * 
+ * And then:
+ * d.stopSampling();
+ */
 class Damper {
   constructor() {
     this.sampler = null;
@@ -6,13 +22,12 @@ class Damper {
 
   /**
    * Begins sampling data to create the dampening level
-   *
+   * @param {number} autoStopAfterMs
    * @memberof Damper
    */
-  startSampling(autoStopAfterMs) {
+  startSampling(autoStopAfterMs = 0) {
     if (this.sampler) {
       console.warn('Damper: Sampling already started, resetting');
-    } else {
     }
     this.sampler = [];
     if (autoStopAfterMs) {
@@ -58,7 +73,7 @@ class Damper {
    * Pushes data into the damper.
    * Returns the damped value after sampling has start/stopped.
    *
-   * @param {*} values
+   * @param {number[]} values
    * @memberof Damper
    */
   push(values) {
@@ -67,7 +82,7 @@ class Damper {
       this.sampler.push(values);
     }
 
-    // No damper values yet, just return
+    // No damper values yet. Just return
     if (!this.damper) return values;
 
     // We can only process values that match the shape of the damper.
