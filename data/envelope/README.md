@@ -1,65 +1,43 @@
-# envelope generator
+# Envelope Generator
 
-This sketch shows the wave generator. Basic usage is:
+Calculates an ADSR envelope value. Can use millisecond-based cycle times or stepwise, according to each call to `calculate()`. Envelope automatically progresses through stages of ADSR. If `-1` is used as the period of a stage, it will stay there until `release()` is called. Use `reset()` to reset envelope back to attack stage.
 
-```
-// Create a default generator that uses a 2000ms sawtooth wave.
-let wave = new WaveGenerator();
-let value = wave.calculate();
-```
+Example:
 
-Call `calculate` to get the value of the wave at that instant. In this sketch, we do this every time the canvas is drawn, so maybe something like 60 times per second.
-
-The default generator returns values from 0 to 1.
-
-# Setting wave shape
-
-Functions allow setting a different wave shape:
-```
-wave.useSawtooth(); // Default
-wave.useSine();
-wave.useTriangle();
-wave.useRamp();
-wave.useSquare();
+```js
+const env = new EnvelopeGenerator({
+ attack: 1000, attackLevel: 1.0,
+ decay: 100,
+ sustain: 5000, sustainLevel: 0.9,
+ release: 1000, releaseLevel: 0.1,
+ amplitude = 1, offset = 0,
+ looping: true
+});
+env.useCallPulse(); // Progress thru envelope with each call to calculate()
+env.useTimePulse(); // Progress thru envelope over time
+let y = env.calculate(); // y is the value of the envelope at that moment
 ```
 
-# Options
+Helper function to make a simple rise over 1000ms to value of 1.0 and then down to 0 over 2000ms
 
-Passing in an object when creating the generator can customise it.
-
-`WaveGenerator(amplitude = 1, offset = 0, looping = true)`
-
-Amplitude allows scaling calculated values, eg:
-
+```js
+const triEnv = EnvelopeGenerator.triangle(1000, 1, 2000);
 ```
-let wave = new WaveGenerator(800);
-let value = wave.calculate(); // will produce values from 0-800.
+ 
+Helper function to ramp up to 1 over 1000ms:
+
+```js
+const rampEnv = EnvelopeGenerator.ramp(1000, 1);
 ```
+ 
+Supplying an `amplitude` will multiply calculated value by this amount - scaling the output.
+`offset` raises the minimum value by the provided amount.
+ 
+Pass a function as `onComplete` to get notified when the envelope finishes.
 
-Offset adds a minimum to all values, shifting the range. 
+## Playground
 
-```
-let wave = new WaveGenerator(1, 100);
-let value = wave.calculate(); // will produce values from 100-101.
-```
+The `playground` sketch visualises the envelope shape and allows you to edit it live and see the results. Click 'Print settings to console' to get the parameters for the envelope you can use in your own code. 
 
-Offset is typically combined with amplitude:
+Remember: the code for the playground is not meant to be built upon 
 
-```
-let wave = new WaveGenerator(800, 800);
-let value = wave.calculate(); // will produce values from 800-1600.
-```
-
-Set `looping` to false if you just want one cycle of the wave.
-
-# Synchronisation
-
-Use `useTimePulse` to synchronise the generator to time. Pass in the milliseconds for one wave. Eg, `useTimePulse(1000)` will mean a 'loop' of the wave every one second.
-
-If the interval of the wave cycles is shorter than the frequency that `calculate` is called, the effect will be a stepped wave, or maybe it won't resemble the desired wave shape at all.
-
-Alternatively, use `useCallPulse` to synchronise the generator to each call of `calculate`. This means that the wave is frozen, moving a little only when requested. Rather than time, pass in the number of calls necessary for one cycle. Eg `useCallPulse(100)` means a cycle after 100 calls to `calculate`.
-
-# Things to try
-
-* Use the EnvelopeGenerator class to dampen the calculated wave value. This could be used to change the amplitude of the wave over time - swelling from a small wave to a large one, for example.

@@ -6,10 +6,10 @@
  * 
  * Examples:
  * ```
- * let env = new EnvelopeGenerator({
+ * const env = new EnvelopeGenerator({
  *    attack: 1000, attackLevel: 1.0,
- *    sustain: 5000, sustainLevel: 0.9,
  *    decay: 100,
+ *    sustain: 5000, sustainLevel: 0.9,
  *    release: 1000, releaseLevel: 0.1,
  *    amplitude = 1, offset = 0,
  *    looping: true
@@ -18,7 +18,7 @@
  * env.useTimePulse(); // Progress thru envelope over time
  * let y = env.calculate();
  * ```
- * Helper function to make a simple up over 1000ms to value of 1.0 and then down to 0 over 2000ms
+ * Helper function to make a simple rise over 1000ms to value of 1.0 and then down to 0 over 2000ms
  * ```const triEnv = EnvelopeGenerator.triangle(1000, 1, 2000);```
  * 
  * Helper function to ramp up to 1 over 1000ms:
@@ -33,7 +33,13 @@
  * @author Clint Heyer 2020
  */
 class EnvelopeGenerator {
-
+  static Stages = {
+    Attack: 0,
+    Decay: 1,
+    Sustain: 2,
+    Release: 3,
+    Complete: 4
+  }
   /**
    * Returns an envelope for a time-based ramp to max value
    *
@@ -76,14 +82,14 @@ class EnvelopeGenerator {
    *     looping = false }={}]
    * @memberof EnvelopeGenerator
    */
-  constructor({ attack = 10, attackLevel = 1,
+  constructor({attack = 10, attackLevel = 1,
     sustain = 10, sustainLevel,
     decay = 10,
     release = 10, releaseLevel = 0,
     amplitude = 1,
     offset = 0,
     onComplete,
-    looping = false } = {}
+    looping = false} = {}
   ) {
     // If sustain level is not defined, use attack level
     if (sustainLevel === undefined) sustainLevel = attackLevel;
@@ -97,6 +103,32 @@ class EnvelopeGenerator {
     this.offset = offset;
     this.looping = looping;
     this.useTimePulse();
+  }
+
+
+  set(stageIndex, amp, period) {
+    if (stageIndex >= this.periods.length) throw Error('stageIndex out of range');
+    if (isNaN(amp)) throw Error('amp is NaN');
+    if (isNaN(period)) throw Error('period is NaN');
+
+    this.periods[stageIndex] = period;
+    if (stageIndex !== EnvelopeGenerator.Stages.Decay)
+      this.levels[stageIndex] = amp;
+  }
+
+  get(stageIndex) {
+    return [this.periods[stageIndex], this.levels[stageIndex]];
+  }
+
+  getMaxPeriod() {
+    return Math.max(...this.periods);
+  }
+
+  getTotalPeriod() {
+    return this.periods.reduce((x, culm) => x + culm, 0);
+  }
+  getMaxLevel() {
+    return Math.max(...this.levels);
   }
 
   /**
@@ -239,4 +271,6 @@ class EnvelopeGenerator {
     }
   }
 }
-export { EnvelopeGenerator }
+
+
+export {EnvelopeGenerator}
