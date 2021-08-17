@@ -32,7 +32,7 @@
  * @class EnvelopeGenerator
  * @author Clint Heyer 2020
  */
-class EnvelopeGenerator {
+export default class EnvelopeGenerator {
   static Stages = {
     Attack: 0,
     Decay: 1,
@@ -271,6 +271,3 @@ class EnvelopeGenerator {
     }
   }
 }
-
-
-export {EnvelopeGenerator}

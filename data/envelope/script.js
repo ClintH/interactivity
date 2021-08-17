@@ -1,81 +1,69 @@
-import {EnvelopeGenerator} from './EnvelopeGenerator.mjs'
+import EnvelopeGenerator from './EnvelopeGenerator.mjs'
+import SlidingWindow from './SlidingWindow.mjs';
+const supportsPointerEvents =
+  typeof document.defaultView.PointerEvent !== "undefined";
+const supportsCoalescedEvents = supportsPointerEvents
+  ? document.defaultView.PointerEvent.prototype.getCoalescedEvents
+  : undefined;
+const thingEl = document.getElementById('thing');
+const trailsEl = document.getElementById('trails');
+let lastMove = 0;
 
-const ballSize = 10;
-/** @type {HTMLCanvasElement} */
-let canvas = document.getElementById('canvas');
-
-let manualEnv = new EnvelopeGenerator({
-  attack: 1000, attackLevel: 1.0,
-  sustain: 5000, sustainLevel: 0.9,
-  decay: 100,
-  release: 1000, releaseLevel: 0.1,
-  looping: true
+let env = new EnvelopeGenerator({
+  attack: 100, attackLevel: 1.0,
+  sustain: 300, sustainLevel: 0.5,
+  decay: 200,
+  release: 1000, releaseLevel: 0,
+  looping: false
 });
-manualEnv.useCallPulse(); // Progress thru envelope with each call to calculate()
 
-// Make a counter function that counts up slowly, resetting at 1
-// this is used to shift the hue of dots over time
-let colourTick = counter(0.001);
 
-// Draw a dot corresponding to wave value
-function draw() {
-  /** @type {CanvasRenderingContext2D} */
-  let ctx = canvas.getContext('2d');
-  ctx.filter = 'blur(2px)'; /* added sizzle. Doesn't work in Safari */
+// Progress thru envelope with each call to calculate()
+env.useCallPulse();
 
-  // Copy and paint entire canvas a little to the left
-  //  this produces the scrolling, smearing effect
-  ctx.drawImage(canvas,
-    0, 0, canvas.width, canvas.height,
-    -ballSize / 2, 0, canvas.width - ballSize / 2, canvas.height);
+document.addEventListener('pointermove', (evt) => {
+  // Reset envelope if pointer starts moving after a 500ms pause
 
-  ctx.filter = 'none';
+  if (Date.now() - lastMove > 500) env.reset();
 
-  // Fade out the entire canvas
-  ctx.fillStyle = 'rgba(255,255,255,0.01)'; // change opacity prevent fade out
-  ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
-  const v = wave.calculate(); // scale is 0->1
-  const vInPixels = (1 - v) * canvas.height; // invert and apply to height, now 800->0 for example
+  // For performance reasons, pointermove doesn't fire for every little move.
+  // The additional movements are available via getCoalescedEvents
+  let events = supportsCoalescedEvents ? evt.getCoalescedEvents() : [{x: evt.clientX, y: evt.clientY}];
 
-  const x = canvas.width - ballSize;
-  const y = vInPixels;
+  for (let move of events) {
+    // Get the next value from the envelope
+    let v = env.calculate();
 
-  // Increment and compute HSL colour
-  ctx.fillStyle = computeColour(colourTick());
+    // Move the red thing
+    moveThing(move.x, evt.y);
 
-  // Draw circle at coordinates
-  ctx.beginPath();
-  ctx.arc(x, y, ballSize, 0, 2 * Math.PI);
-  ctx.fill();
-
-  window.requestAnimationFrame(draw); // Run draw again
-}
-
-function onDocumentReady() {
-  const onResize = function () {
-    canvas.width = document.body.offsetWidth;
-    canvas.height = document.body.offsetHeight;
+    // Make a trail element, scaling size according to envelope
+    pushTrail(move.x, move.y, v * 300);
   }
-  window.addEventListener('resize', onResize);
 
-  onResize(); // Trigger event handler to match canvas size to window
-  window.requestAnimationFrame(draw); // Kick off draw loop
+  lastMove = Date.now(); // Keep track of when last move happened
+})
+
+function pushTrail(x, y, size) {
+  // Make sure size is at least 10px
+  size = Math.max(10, size);
+
+  // Insert a trail element
+  let html = `<div class="trail" style="width:${size}px; height:${size}px; left:${x - size / 2}px; top:${y - size / 2}px"></div>`
+  trailsEl.insertAdjacentHTML('afterbegin', html);
+
+  // Delete last element if trail is over 100 elements
+  if (trailsEl.children.length > 100) {
+    trailsEl.lastElementChild.remove();
+  }
 }
 
-function counter(delta, startAt = 0, resetAt = 1) {
-  let v = startAt;
-  return function () {
-    v += delta;
-    if (v > resetAt) v = startAt;
-    return v;
-  };
-}
-function computeColour(percentage) {
-  if (percentage < 0) percentage = 0;
-  if (percentage > 1) percentage = 1;
-  return 'hsl(' + Math.floor(360 * percentage) + ',100%,50%)';
+// Move element by its center
+function moveThing(x, y) {
+  let bounds = thingEl.getBoundingClientRect();
+  thingEl.style.left = x - bounds.width / 2 + 'px';
+  thingEl.style.top = y - bounds.height / 2 + 'px';
 }
 
-// Initialise
-onDocumentReady();
+

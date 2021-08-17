@@ -1,4 +1,4 @@
-import {EnvelopeGenerator} from './EnvelopeGenerator.mjs'
+import EnvelopeGenerator from './EnvelopeGenerator.mjs'
 let env = new EnvelopeGenerator({
   attack: 1000, attackLevel: 1.0,
   sustain: 2500, sustainLevel: 0.5,

@@ -4,7 +4,6 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>envelope generator</title>
 </head>
 <style>
@@ -17,6 +16,9 @@
     padding: 0;
     margin: 0;
     height: 100%;
+    background: rgb(160, 228, 251);
+    background: radial-gradient(circle, rgba(160, 228, 251, 1) 0%, rgba(112, 205, 236, 1) 35%, rgba(14, 193, 254, 1) 100%);
+    overflow: hidden;
   }
 
   *,
@@ -24,9 +26,26 @@
   *:after {
     box-sizing: inherit;
   }
+
+  #thing {
+    background-color: #FC270F;
+    width: 5rem;
+    height: 5rem;
+    position: absolute;
+    clip-path: circle(50% at 50% 50%);
+  }
+
+  .trail {
+    position: absolute;
+    background-color: rgba(20, 20, 20, 0.2);
+    clip-path: circle(50% at 50% 50%);
+    mix-blend-mode: overlay;
+  }
 </style>
 
 <body>
+  <div id="trails"></div>
+  <div id="thing"></div>
   <script type="module" src="script.js"></script>
 </body>
 
