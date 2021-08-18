@@ -39,6 +39,7 @@ function drawCircle(ctx) {
 
   ctx.fillStyle = 'black';
   ctx.beginPath();
+  // Usage: arc(x, y, radius, startAngle, endAngle);
   ctx.arc(
     canvas.width / 2,
     canvas.height / 2,
