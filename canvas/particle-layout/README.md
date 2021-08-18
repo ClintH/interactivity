@@ -4,6 +4,16 @@ Demonstrates animated particle layouts, adapted from [examples by Peter Beshai](
 
 ![](demo.gif)
 
+It also shows how to compute colours along a scale (using the Chroma library).
+
+[It's on Glitch to view and edit live](https://glitch.com/edit/#!/ch-particle-layout)
+
 Uses:
 * [Anime](http://animejs.com/documentation/#cssProperties) - Animation
 * [Chroma](http://gka.github.io/chroma.js/) - Colour manipulation
+
+## Things to try
+
+* Change the drawing function so particles are rendered differently
+* Can you devise your own layout algorithm?
+* Can particles be 'disturbed' from where they should be according to pointer movement?

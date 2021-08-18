@@ -1,15 +1,11 @@
-let things = [];
-let thingWidthHeight = 3;
-let thingMargin = 3;
+const things = [];
+const thingWidthHeight = 3;
+const thingMargin = 3;
 let anim = null;
 
 function onDocumentReady() {
   // Set up event listeners
   window.addEventListener('resize', onResize);
-  document.getElementById('canvas').addEventListener('pointermove', e=>{
-    window.pointerX = e.clientX;
-    window.pointerY = e.clientY;
-  });
 
   onResize(); // Manually trigger first time
   createThings();
@@ -23,11 +19,10 @@ function onDocumentReady() {
 // Create a bunch of random things
 function createThings() {
   const totalThings = 7000;
-  let colourScale = chroma.scale(['yellow', '008ae5']).domain([0, totalThings]);
+  const colourScale = chroma.scale(['yellow', '008ae5']).domain([0, totalThings]);
 
-  let canvas = document.getElementById('canvas');
   var id = 0;
-  for (let i=0;i<totalThings;i++) {
+  for (let i = 0; i < totalThings; i++) {
     let x = randomInt(canvasSize.width);
     let y = randomInt(canvasSize.height);
     things.push({
@@ -41,67 +36,74 @@ function createThings() {
   }
 }
 
+// Called whenever layout needs to be recomputed (eg after a resize)
 function layout() {
-  var canvas = document.getElementById('canvas');
-  
+  const canvas = document.getElementById('canvas');
+
   // Stop existing animation
   if (anim != null) anim.pause();
 
-  // Perform layout
+  // Perform layout: Here are three options
   //gridLayout(things);
-  phyllotaxisLayout(things, canvas.width/2, canvas.height/2);
+  phyllotaxisLayout(things, canvas.width / 2, canvas.height / 2);
   //randomLayout(things);
 
   // Use the 'anime' library to transition to destination
   anim = anime({
     targets: things,
     duration: 20000,
-    x: function(thing, index, length) {
+    x: function (thing, index, length) {
       return thing.destX;
     },
-    y: function(thing, index, length) {
+    y: function (thing, index, length) {
       return thing.destY;
     },
-    complete: function() {
+    complete: function () {
       console.log("Complete");
     },
     autoplay: true
   });
 }
 
+// Lays out particles in a uniform grid
 function gridLayout(things) {
-  let canvas = document.getElementById('canvas');
-  
+  const canvas = document.getElementById('canvas');
+
   // Assume all things are the same size
   const thingHeight = thingWidthHeight + thingMargin;
   const thingWidth = thingWidthHeight + thingMargin;
 
-  const thingsPerRow = Math.floor(canvas.width/thingWidth);
-  const numRows = things.length / thingsPerRow;
+  // How many things can we fit per row?
+  const thingsPerRow = Math.floor(canvas.width / thingWidth);
 
+  // Set destX and destY for each
   things.forEach((thing, i) => {
     thing.destX = thingWidth * (i % thingsPerRow);
-    thing.destY = thingHeight * Math.floor(i/thingsPerRow);
+    thing.destY = thingHeight * Math.floor(i / thingsPerRow);
   });
   return things;
 }
 
+// Lays our particles randomly
 function randomLayout(things) {
-  var canvas = document.getElementById('canvas');
-  
-  things.forEach((thing,i)=> {
+  const canvas = document.getElementById('canvas');
+
+  things.forEach((thing, i) => {
     thing.destX = randomInt(canvas.width);
     thing.destY = randomInt(canvas.height);
   });
 }
 
+// Computes where each particle should be
+// Don't worry about understanding the math, the key thing is that
+// it sets destX and destY for each thing
 function phyllotaxisLayout(things, xOffset = 0, yOffset = 0, iOffset = 0) {
   // Theta determines the spiral of the layout
   const theta = Math.PI * (3 - Math.sqrt(5));
+  const thingRadius = (thingWidthHeight + thingMargin) / 2;
 
-  const thingRadius = (thingWidthHeight+thingMargin) / 2;
-  things.forEach((thing,i)=> {
-    const index = (i+iOffset) % things.length;
+  things.forEach((thing, i) => {
+    const index = (i + iOffset) % things.length;
     const phylloX = thingRadius * Math.sqrt(index) * Math.cos(index * theta);
     const phylloY = thingRadius * Math.sqrt(index) * Math.sin(index * theta);
 
@@ -112,21 +114,19 @@ function phyllotaxisLayout(things, xOffset = 0, yOffset = 0, iOffset = 0) {
 }
 
 function draw() {
-  let canvas = document.getElementById('canvas');    
-  let ctx = canvas.getContext('2d');
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
 
-  // Fade out the entire canvas
-  //ctx.fillStyle = 'rgba(255,255,255,0.3)';
-  ctx.clearRect(0,0, canvasSize.width,canvasSize.height);
+  // Clear it first
+  ctx.clearRect(0, 0, canvasSize.width, canvasSize.height);
 
-  // Move and draw each thing
+  // Draw each thing
   things.forEach(thing => {
-    drawThing(thing,ctx);
-
+    drawThing(thing, ctx);
   });
 
   window.requestAnimationFrame(draw);
- }
+}
 
 function drawThing(thing, ctx) {
   ctx.fillStyle = thing.colour;
@@ -134,15 +134,14 @@ function drawThing(thing, ctx) {
 }
 
 function onResize() {
-  var canvas = document.getElementById('canvas');
-  let ctx = canvas.getContext('2d');
-  
+  const canvas = document.getElementById('canvas');
+
   // Size canvas to match actual pixels
   canvas.width = document.body.offsetWidth;
   canvas.height = document.body.offsetHeight;
 
   // Cache size
-  window.canvasSize = { width: canvas.width, height: canvas.height};
+  window.canvasSize = {width: canvas.width, height: canvas.height};
 
   if (things.length > 0)
     layout();
@@ -150,7 +149,7 @@ function onResize() {
 
 // ---------------------
 // Helper functions
-if (document.readyState != 'loading'){
+if (document.readyState != 'loading') {
   onDocumentReady();
 } else {
   document.addEventListener('DOMContentLoaded', onDocumentReady);
