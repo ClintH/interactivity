@@ -1,6 +1,10 @@
 # starter
 
-Sets up a canvas and draws a simple shape.
+![](canvas.png)
+
+Sets up a canvas and demos drawing some basic shapes.
+
+The drawing happens when the sketch loads, or if the window is resized. For an animated version (where drawing happens repeatedly), see [starter-animated](../starter-animated/).
 
 # Read more
 

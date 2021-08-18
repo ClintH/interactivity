@@ -1,9 +1,3 @@
-function onDocumentReady() {
-  window.addEventListener('resize', onResize);
-
-  onResize(); // Manually trigger first time
-}
-
 // Call draw() whenever you want to update the canvas
 // In this demo, draw() is automatically called when first loaded or when
 // the browser is resized
@@ -12,7 +6,7 @@ function draw() {
 
   // Your drawing code here!
 
-  // these functions demonstrate a few basics:
+  // These functions demonstrate a few basics:
   drawCircle(ctx);
   drawCorners(ctx);
   drawText(ctx);
@@ -34,6 +28,7 @@ function drawCorners(ctx) {
 function drawText(ctx) {
   ctx.fillStyle = 'yellow';
   ctx.font = '48px serif';
+
   // Usage: fillText(text, x, y)
   ctx.fillText('Canvas drawing', 10, 100);
 }
@@ -60,6 +55,11 @@ function onResize() {
   canvas.width = document.body.offsetWidth;
   canvas.height = document.body.offsetHeight;
   draw();
+}
+
+function onDocumentReady() {
+  window.addEventListener('resize', onResize);
+  onResize(); // Manually trigger first time
 }
 
 if (document.readyState != 'loading') {
