@@ -1,17 +1,6 @@
 let audioCtx, analyser, ampWindow, freqWindows;
 
-class Thing {
-  constructor() {
-    this.size = 100;
-    this.state = 0;
-    this.rotation = 0;
-    this.rotationVector = 0;
-    this.x = window.innerWidth / 2;
-    this.y = window.innerHeight / 2;
-    this.deformations = [];
-  }
 
-}
 let thing = new Thing();
 
 function draw() {
@@ -167,9 +156,9 @@ function onDocumentReady() {
 
   // Initalise microphone
   navigator.getUserMedia(
-    { audio: true },
+    {audio: true},
     onMicSuccess, // Call this when microphone is ready
-    error => { console.error('Could not init microphone', error); });
+    error => {console.error('Could not init microphone', error);});
 
   thing = new Thing();
 
