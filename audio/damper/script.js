@@ -1,86 +1,67 @@
-let audioCtx, analyser, visualiser, freqDamper, waveDamper = null;
+import {Remote} from "https://unpkg.com/@clinth/remote@latest/dist/index.mjs";
+import Damper from '../util/Damper.js';
+import Visualiser from '../util/Visualiser.js';
 
-if (document.readyState != 'loading') {
-  onDocumentReady();
-} else {
-  document.addEventListener('DOMContentLoaded', onDocumentReady);
+const freqDamper = new Damper('freq');
+const waveDamper = new Damper('wave');
+const save = (d) => d.save();
+freqDamper.onStopped = save;
+waveDamper.onStopped = save;
+
+// Try to reload existing
+freqDamper.recall();
+waveDamper.recall();
+
+// Wire up buttons
+document.getElementById('btnStart').addEventListener('click', () => {
+  // Start sampling after a moment to avoid capturing lingering sound from physical click
+  setTimeout(() => { 
+    freqDamper.startSampling(4000); 
+    waveDamper.startSampling(4000); 
+  }, 200);
+});
+document.getElementById('btnReset').addEventListener('click', () => { 
+  freqDamper.reset(); 
+  waveDamper.reset();
+  freqDamper.save();
+  waveDamper.save();
+});
+
+const visualiserEl = document.getElementById('dampenedVis');
+let visualiser = null;
+if (visualiserEl) {
+  visualiser = new Visualiser(visualiserEl, this);
+  visualiser.setExpanded(true);
 }
 
-// Main initialisation, called when document is loaded and ready.
-function onDocumentReady() {
-  freqDamper = new Damper();
-  waveDamper = new Damper();
-  visualiser = new Visualiser(document.getElementById('visualiser'));
-
-  // Wire up buttons
-  document.getElementById('btnStart').addEventListener('click', () => {
-    // Start sampling after a moment to avoid capturing lingering sound from physical click
-    setTimeout(() => { freqDamper.startSampling(4000); waveDamper.startSampling(4000); }, 200);
-  });
-  document.getElementById('btnReset').addEventListener('click', () => { freqDamper.reset(); waveDamper.reset(); });
-
-  // Initalise microphone
-  navigator.getUserMedia(
-    { audio: true },
-    onMicSuccess, // Call this when microphone is ready
-    error => { console.error('Could not init microphone', error); });
+function visualise(wave, freq) {
+  if (!visualiser) return;
+  visualiser.renderWave(wave, true);
+  visualiser.renderFreq(freq);  
 }
 
-// Microphone successfully initalised, now have access to audio data
-function onMicSuccess(stream) {
-  audioCtx = new AudioContext();
+const r = new Remote({
+  ourId:'damper'
+});
 
-  audioCtx.addEventListener('statechange', () => {
-    console.log('Audio context state: ' + audioCtx.state);
-  });
-
-  analyser = audioCtx.createAnalyser();
-
-  // fftSize must be a power of 2. Higher values slower, more detailed
-  // Range is 32-32768
-  analyser.fftSize = 1024;
-
-  // smoothingTimeConstant ranges from 0.0 to 1.0
-  // 0 = no averaging. Fast response, jittery
-  // 1 = maximum averaging. Slow response, smooth
-  analyser.smoothingTimeConstant = 0.9;
-
-  // Microphone -> analyser
-  const micSource = audioCtx.createMediaStreamSource(stream);
-  micSource.connect(analyser);
-
-  // Start loop
-  window.requestAnimationFrame(analyse);
-}
-
-function analyse() {
-  const bins = analyser.frequencyBinCount;
-
-  // Get frequency and amplitude data
-  var freq = new Float32Array(bins);
-  var wave = new Float32Array(bins);
-  analyser.getFloatFrequencyData(freq);
-  analyser.getFloatTimeDomainData(wave);
-
+// When data is received from the Remote, do something with it...
+r.onData = (d) => {
+  let freq = d.freq;
+  let wave = d.wave;
+  
   // Pass it through the dampening logic
   freq = freqDamper.push(freq);
 
-  // Now because wave data is indexed by time, it doesn't make sense to
-  // pass it in as-is. We can however sort the data to get some impression
+  // Because wave data is indexed by time, it doesn't make sense to
+  // pass it in as-is. We can however sort by amplitude to get some impression
   // of the decay of sound.
   wave = wave.map(v => Math.abs(v)); // Convert to absolute values
   wave = wave.sort(); // Sort
   wave = waveDamper.push(wave); // now send 
 
-  // Optional rendering of data
-  //visualiser.renderWave(wave, true);
-  //visualiser.renderFreq(freq);
-
-  // If you're interested in seeing the average recorded by the damper:
-  visualiser.renderFreq(freqDamper.getDamper());
-  visualiser.renderWave(waveDamper.getDamper(), true);
-
-  // Run again
-  window.requestAnimationFrame(analyse);
-
+  // Show the recorded average:
+  //visualise(waveDamper.getDamper(), freqDamper.getDamper());
+  
+  // Or alternatively, show the dampened value
+  visualise(wave, freq);
 }

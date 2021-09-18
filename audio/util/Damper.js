@@ -13,9 +13,14 @@
  * 
  * And then:
  * d.stopSampling();
+ *
+ * Use the callback handler onSamplingStopped(damperInstance) to be notified when sampling is stopped
+ *
+ * Use save/recall to persist to localStorage. Make sure a unique id is given in the constructor.
  */
-class Damper {
-  constructor() {
+export default class Damper {
+  constructor(id= '') {
+    this.id = id;
     this.sampler = null;
     this.damper = null;
   }
@@ -27,17 +32,19 @@ class Damper {
    */
   startSampling(autoStopAfterMs = 0) {
     if (this.sampler) {
-      console.warn('Damper: Sampling already started, resetting');
+      this.log('Sampling already started, resetting');
     }
     this.sampler = [];
     if (autoStopAfterMs) {
-      console.info('Damper: Sampling started. Automatically stopping sampling after ' + autoStopAfterMs + 'ms.');
+      this.log('Sampling started. Automatically stopping sampling after ' + autoStopAfterMs + 'ms.');
       setTimeout(() => this.stopSampling(), autoStopAfterMs);
     } else {
-      console.info('Damper: Sampling started');
+      this.log('Sampling started');
     }
   }
 
+
+  
   /**
    * Stops sampling data for the dampening.
    *
@@ -45,17 +52,17 @@ class Damper {
    */
   stopSampling() {
     if (this.sampler.length == 0) {
-      console.warn('Damper: No samples received. Use push() to send data to be sampled');
+      this.log('No samples received. Use push() to send data to be sampled');
     } else {
       let tmp = [];
       tmp.length = this.sampler[0].length;
-      console.info(this.sampler.length + ' samples to average.');
+      this.log(this.sampler.length + ' samples to average.');
       for (var i = 0; i < tmp.length; i++) {
         // For each position, calculate average across all samples
         let total = 0;
         for (var x = 0; x < this.sampler.length; x++) {
           if (this.sampler[x].length != tmp.length) {
-            console.error('Damper: Samples contains arrays of different lengths. Expected: ' + tmp.length + ' Encountered:  ' + this.sampler[x].length);
+            this.error('Samples contains arrays of different lengths. Expected: ' + tmp.length + ' Encountered:  ' + this.sampler[x].length);
             this.sampler = null;
             return;
           }
@@ -66,6 +73,7 @@ class Damper {
       }
       this.setDamper(tmp);
     }
+    if (this.onStopped) this.onStopped(this);
     this.sampler = null;
   }
 
@@ -87,7 +95,7 @@ class Damper {
 
     // We can only process values that match the shape of the damper.
     if (values.length != this.damper.length) {
-      console.warn('Damper: Length of values different than damper, returning raw values');
+      this.log('Length of values different than damper, returning raw values');
       return values;
     }
 
@@ -104,11 +112,31 @@ class Damper {
   }
 
   setDamper(values) {
-    console.info('Damper: dampening enabled with ' + values.length + ' values.');
+    console.info('Dampening enabled with ' + values.length + ' values.');
     this.damper = values;
   }
 
+  save() {
+    localStorage.setItem('damper-' + this.id, JSON.stringify(this.damper));
+    this.log('Saved settings');
+  }
+  
+  recall() {
+    let existing = localStorage.getItem('damper-' + this.id);
+    if (existing) {
+      this.damper = JSON.parse(existing);
+      this.log('Recalled settings');
+    }
+  }
   getDamper() {
     return this.damper;
+  }
+  
+    log(m) {
+    console.log('Damper[' + this.id+ ']', m);
+  }
+  
+  error(m) {
+    console.error('Damper[' + this.id +']', m);
   }
 }

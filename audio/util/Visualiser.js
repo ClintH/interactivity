@@ -10,30 +10,40 @@
  * 
  * Draws on https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Visualizations_with_Web_Audio_API
  */
-class Visualiser {
 
-  constructor(parentElem) {
+import Tracker from './Tracker.js';
+
+export default class Visualiser {
+
+  constructor(parentElem, audio) {
     this.freqMaxRange = 200;
+    this.audio = audio;
     this.parent = parentElem;
     this.pointerDelaying = false;
     this.pointerClickDelayMs = 100;
 
     // Add HTML
     parentElem.innerHTML = `
-    <div style="border: 1px solid black; padding:0.5em; position:absolute">
+    <section>
       <button id="rendererComponentToggle">🔼</button>
       <div>
         <h1>Visualiser</h1>
-        <h2>Frequency distribution</h2>
-        <br />
-        <canvas id="rendererComponentFreqData" height="200" width="400"></canvas>
-        <h2>Waveform</h2>
-        <button id="rendererComponentWaveReset">Reset</button>
-        <div>
-          Press and hold on wave to measure
+        <div style="display:flex; flex-wrap: wrap">
+          <div class="visPanel">
+            <h2>Frequency distribution</h2>
+            <br />
+            <canvas id="rendererComponentFreqData" height="200" width="400"></canvas>
+          </div>
+          <div class="visPanel">
+            <h2>Waveform</h2>
+            <button id="rendererComponentWaveReset">Reset</button>
+            <div>
+              Press and hold on wave to measure
+            </div>
+            <br />
+            <canvas id="rendererComponentWaveData" height="200" width="400"></canvas>
+          </div>
         </div>
-        <br />
-        <canvas id="rendererComponentWaveData" height="200" width="400"></canvas>
       </div>
     </section>
     `
@@ -76,7 +86,7 @@ class Visualiser {
 
     const pointer = this.getPointerRelativeTo(canvas);
     var width = (canvasWidth / bins);
-    var minMax = getMinMax(freq);
+    var minMax = this.getMinMax(freq);
 
     for (var i = 0; i < bins; i++) {
       if (!Number.isFinite(freq[i])) continue;
@@ -100,11 +110,12 @@ class Visualiser {
 
         // Display
         g.fillStyle = 'black';
-        g.fillText('Frequency (' + i + ') at pointer:  ' + getFrequencyAtIndex(i).toLocaleString('en') + '-' + getFrequencyAtIndex(i + 1).toLocaleString('en'), 2, 10);
-        g.fillText('Raw value: ' + freq[i].toFixed(2), 2, 20);
-        g.fillText('Min: ' + this.freqTracker.min().toFixed(2), 2, 40);
-        g.fillText('Max: ' + this.freqTracker.max().toFixed(2), 60, 40);
-        g.fillText('Avg: ' + this.freqTracker.avg().toFixed(2), 120, 40);
+        if (this.audio)
+          g.fillText(`Frequency (${i}) at pointer: ${this.audio.getFrequencyAtIndex(i).toLocaleString('en')} - ${this.audio.getFrequencyAtIndex(i + 1).toLocaleString('en')}`, 2, 10);
+        g.fillText(`Raw value: ${freq[i].toFixed(2)}`, 2, 20);
+        g.fillText(`Min: ${this.freqTracker.min().toFixed(2)}`, 2, 40);
+        g.fillText(`Max: ${this.freqTracker.max().toFixed(2)}`, 60, 40);
+        g.fillText(`Avg: ${this.freqTracker.avg().toFixed(2)}`, 120, 40);
 
       }
       g.fillRect(left, offset, width, height);
@@ -229,5 +240,23 @@ class Visualiser {
       x: evt.pageX,
       y: evt.pageY
     };
+    evt.preventDefault();
+  }
+  
+  getMinMax(data, start = 0, end = data.length) {
+    if (end > data.length) throw new Error('end is past size of array');
+    if (start < 0) throw new Error('start should be at least 0');
+    if (end <= start) throw new Error('end should be greater than start');
+
+    let max = Number.MIN_SAFE_INTEGER;
+    let min = Number.MAX_SAFE_INTEGER;
+    for (var i = start; i < end; i++) {
+      max = Math.max(data[i], max);
+      min = Math.min(data[i], min);
+    }
+    if (!Number.isFinite(max)) max = 0;
+    if (!Number.isFinite(min)) min = 0;
+
+    return { max: max, min: min };
   }
 }

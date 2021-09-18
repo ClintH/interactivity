@@ -10,8 +10,7 @@ Since the computer captures sound at a high rate, a single pulse sound is repres
 
 In the audio setup part, a low and high pass filter is added but not used. This might be useful to cut out unnecessary parts of the audio spectrum. Eg to focus on high-pitched pulses and ignore the bassier sounds of people walking around.
 
-The sketch demonstrates:
-* `IntervalMeter`
+The sketch uses the `IntervalMeter` helper class.
 
 # Things to try
 

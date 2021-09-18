@@ -1,11 +1,10 @@
 # audio-playground
 
-This sketch shows the frequency distribution of live audio as well as amplitude over time (ie the waveform).
+This sketch shows the frequency distribution of live audio and amplitude over time (ie the waveform).
 
 The code is not meant to be extended - it's meant to be a way of poking and probing the data. Please see the other sketches which are designed for building on top of.
 
 ## Visualisation: Frequency
-
 
 The rainbow-coloured visualisation is the distribution of sound frequencies over a short period of time.
 

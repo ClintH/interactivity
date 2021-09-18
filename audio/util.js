@@ -1,174 +1,79 @@
-// Returns freq for a given index
-function getFrequencyAtIndex(index) {
-  return index * audioCtx.sampleRate / (analyser.frequencyBinCount * 2);
+
+
+// Clamps a value to be within a min and max
+export function clamp(v, min = 0, max = 1) {
+  if (isNaN(v)) throw Error('value is NaN');
+  
+  // eg: clamp(101, 0, 100) returns 100, because the max is 100
+  // eg: clamp(-5, 0, 100) returns 0, because the minimum is 0
+  // eg: clamp(60, 0, 100) returns 60, because it's within the bounds
+  if (v < min) return min;
+  if (v > max) return max;
+  return v;
 }
 
-// Returns array index for a given freq
-function getIndexForFrequency(freq, analyser) {
-  const nyquist = analyser.context.sampleRate / 2.0;
-  let index = Math.round(freq / nyquist * analyser.frequencyBinCount);
-  if (index < 0) index = 0;
-  if (index >= analyser.frequencyBinCount) index = analyser.frequencyBinCount - 1;
-  return index;
+// Scales an input value from a source range to a destination range.
+// By default maps to percentage scale: 
+//   scale(5, 0, 10) gives 0.5 (50%)
+export function scale(v, sourceMin, sourceMax, destMin = 0, destMax = 1) {
+  if (isNaN(v)) throw Error('value is NaN');
+  
+  // eg: scale(70, 0, 70, 0, 5) = 70 is 100% on the scale of 0-70. Mapping that to the destination range of 0-5 gives 5 (100%)
+  // eg: scale(70, 60, 80, 0, 5) = 70 is 50% on the scale of 60-80. Mapping that to the same destination of 0-5 gives 2.5 instead (50%)
+  return (v - sourceMin) * (destMax - destMin) / (sourceMax - sourceMin) + destMin;
 }
 
-function getMinMax(data, start = 0, end = data.length) {
-  if (end > data.length) throw new Error('end is past size of array');
-  if (start < 0) throw new Error('start should be at least 0');
-  if (end <= start) throw new Error('end should be greater than start');
 
-  let max = Number.MIN_SAFE_INTEGER;
-  let min = Number.MAX_SAFE_INTEGER;
-  for (var i = start; i < end; i++) {
-    max = Math.max(data[i], max);
-    min = Math.min(data[i], min);
-  }
-  if (!Number.isFinite(max)) max = 0;
-  if (!Number.isFinite(min)) min = 0;
-
-  return { max: max, min: min };
+export function getRandomArrayIndex(arr) {
+  if (arr === undefined) throw Error('undefined value');
+  if (!Array.isArray(arr)) throw Error('Not an array');
+  return getRandomInt(0, arr.length);
+  
 }
 
-function getAvg(data, start = 0, end = data.length) {
-  if (end > data.length) throw new Error('end is past size of array');
-  if (start < 0) throw new Error('start should be at least 0');
-  if (end <= start) throw new Error('end should be greater than start');
+export function getRandomInt(min, max) {
+  if (isNaN(min)) throw Error('min is NaN');
+  if (isNaN(max)) throw Error('max is NaN');
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+}
+
+export function avg(data, start = 0, end = data.length) {
+  if (data === undefined) throw Error('data undefined');
+  if (!Array.isArray(data)) throw Error('Expected array data');
+  if (end > data.length) throw  Error('end is past size of array');
+  if (start < 0) throw  Error('start should be at least 0');
+  if (end <= start) throw Error('end should be greater than start');
 
   let total = 0;
   for (var i = start; i < end; i++) {
+    if (isNaN(data[i])) throw Error('Data has NaN at position ' + i);
     total += data[i];
   }
   return total / end - start;
 }
 
-/**
- * Records values sent to it via 'add'
- * Can compute the average, min and max of values seen
- * Use 'reset' to clear the tracker
- *
- * @class Tracker
- */
-class Tracker {
-  constructor(id = null) {
-    this.reset();
-    this.id = id;
+// Returns the min, max, span and average of an array
+//  if abs is true, absolute value of numbers is used (ie. -5 is treated as 5)
+export function getMinMaxAvg(data, abs = false) {
+  if (data === undefined) throw Error('data undefined');
+  if (!Array.isArray(data)) throw Error('Expected array data');
+  
+  let max = Number.MIN_SAFE_INTEGER;
+  let min = Number.MAX_SAFE_INTEGER;
+  let total = 0.0;
+  for (var i = 0; i < data.length; i++) {
+    let d = abs ? Math.abs(data[i]) : data[i];
+    if (isNaN(d)) throw Error('Data contains NaN at position ' + i);
+    max = Math.max(max, d);
+    min = Math.min(min, d);
+    total += d;
   }
 
-  add(sample) {
-    if (!Number.isFinite(sample)) return;
-    if (Number.isNaN(sample)) return;
-    this._samples++;
-    this._total += sample;
-    this._min = Math.min(sample, this._min);
-    this._max = Math.max(sample, this._max);
+  return {
+    min: min,
+    max: max,
+    avg: total / data.length
   }
-
-  avg() {
-    return this._total / this._samples;
-  }
-
-  min() {
-    return this._min;
-  }
-
-  max() {
-    return this._max;
-  }
-
-  reset(newId = null) {
-    if (newId !== null) this.id = newId;
-    this._min = Number.MAX_SAFE_INTEGER;
-    this._max = Number.MIN_SAFE_INTEGER;
-    this._total = 0;
-    this._samples = 0;
-  }
-}
-
-/**
- * Keeps track of the last X number of values.
- * Can compute the average of these.
- * @class SlidingWindow
- */
-class SlidingWindow {
-  constructor(max = 100) {
-    this.store = [];
-    this.max = max;
-  }
-
-  clear() {
-    this.store = [];
-  }
-
-  add(sample) {
-    if (!Number.isFinite(sample)) return;
-    if (Number.isNaN(sample)) return;
-
-    this.store.push(sample);
-    if (this.store.length >= this.max) {
-      this.store = this.store.slice(1);
-    }
-  }
-
-  avg() {
-    let counted = 0;
-    let total = 0;
-    for (var i = 0; i < this.store.length; i++) {
-      counted++;
-      total += this.store[i];
-    }
-    if (counted == 0) return Number.NaN;
-    return total / counted;
-  }
-}
-
-/**
- * Computes the interval between pulses
- * 'pulse' is called for every pulse, 'calculate' returns average interval
- * @class IntervalMeter
- */
-class IntervalMeter {
-  /**
-   *Creates an instance of IntervalMeter.
-   * @param {number} [max=100] Number of pulses used to calculate
-   * @param {number} [pulseLengthMs=0] Minimum pulse speed, useful for filtering out mistaken pulses
-   * @memberof IntervalMeter
-   */
-  constructor(max = 100, pulseLengthMs = 0) {
-    this.max = max;
-    this.pulseLengthMs = pulseLengthMs;
-    this.store = [];
-    this.next = 0;
-  }
-
-  pulse() {
-    let now = performance.now();
-    if (now < this.next) return false; // Pulse happened too soon, ignoring
-    this.next = now + this.pulseLengthMs;
-    this.store.push(now);
-    if (this.store.length >= this.max) {
-      this.store = this.store.slice(1);
-    }
-    return true;
-  }
-
-
-  // Return average interval between all samples in milliseconds
-  calculate() {
-    if (this.store.length == 0) return 0;
-    let intervals = [];
-    let total = 0;
-    for (var i = 1; i < this.store.length; i++) {
-      let interval = this.store[i] - this.store[i - 1];
-      intervals.push(interval);
-      total += interval;
-    }
-
-    if (this.store[0] < performance.now() - 5000) {
-      // Haven't received any pulses for a while, reset
-      this.store = [];
-      return 0;
-    }
-    return total / (this.store.length - 1);
-  }
-
 }

@@ -1,26 +1,44 @@
-<html>
-
+<!doctype html>
+<html lang="en">
 <head>
-  <title>Audio sketches</title>
-  <link href="audio.css" rel="stylesheet">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>audio</title>
+  <link rel="stylesheet" href="../base.css">
 </head>
 
 <body>
-  <h1>Audio sketches</h1>
-  <p>First <a href="playground/">try the playground</a> for visualisations and experimentation with audio
-    pre-processing and FFT settings.
+
+  <h1>audio</h1>
+  <p>
+    Each of these examples is has two parts - a sketch that works with analysed data,
+    and another sketch which does the analysis. The latter are called 'remotes'. You can,
+    for example run a remote on your mobile phone (thus using its microphone), and further
+    processing and using the data on your laptop.
   </p>
   <p>
-    The sketches below are listed in increasing complexity. They are meant to demonstrate techniques and to be the
-    starting point of your own experimentation.
+    Remember that Glitch projects are accessible from https://PROJECTNAME.glitch.me    
   </p>
   <ul>
-    <li><a href="threshold/">threshold</a>: responds if loudness reaches a threshold.</li>
-    <li><a href="beats/">beats</a>: this sketch responds to threshold peaks and uses that to calculate tempo</li>
-    <li><a href="damper/">damper</a>: this sketch shows how to reduce background noise and sample and average of data
-      over time</li>
+    <li><a href="playground/">playground</a>: experiment with processing settings</li>
+    <li><a href="playground-meyda/">playground-meyda</a>: experiment with audio features from the Meydar library</li>
   </ul>
-
+  
+  Sketches for extending. They are listed in ascending complexity.
+  <ul>
+    <li><a href="threshold/">threshold</a>: detecting if audio hits a certain level</li>
+    <li><a href="beats/">beats</a>: detecting tempo from audio peaks</li>
+    <li><a href="damper/">damper</a>: demos the Damper helper class for (very crude) background noise cancellation</li>
+    <li><a href="thing/">thing</a>: A thing which changes form with current and historic audio</li>
+    <li><a href="particles/">particles</a>: </li>
+  </ul>
+  
+  <hr>
+  <ul>
+    <li><a href="remote/">remote</a>: a general purpose 'remote' for sending FFT-processed audio</li>
+    <li><a href="client/">client</a>: a skeleton client for remote data</li>
+    <li><a href="remote-meyda/">remote-meyda</a>: a 'remote' for sending audio features extracted by the Meyda library</li>
+  </ul>
 </body>
 
 </html>

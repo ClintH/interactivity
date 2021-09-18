@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>remote-meyda</title>
+  <link rel="stylesheet" href="../base.css">
+</head>
+
+<body>
+  <script src="https://unpkg.com/meyda/dist/web/meyda.min.js"></script>
+  <style>
+    body {
+      height: 100vh;
+    }
+    #lastData,#log {
+      font-family: Menlo, Consolas, Monaco, Liberation Mono, Lucida Console, monospace;
+    }
+    #last>table {
+      border: 1px solid var(--spotL);
+    }
+    #last td {
+      width: 5rem;
+      padding: 0.5rem;
+    }
+    #last.frozen {
+      background-color: lightblue;
+    }
+    h2 {
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      font-size: small;
+    }
+    button {
+      padding: 1rem;
+      margin-top: 0.5rem;
+    }
+
+    .paused {
+      border:2px solid red;
+    }
+    #log {
+      font-size: small;
+      flex: 1;
+      height: 100%;
+      min-height: 5rem;
+      overflow-y: scroll;
+    }
+    #log .error {
+      color: red;
+    }
+    #lastData {
+      word-break: break-all;
+    }
+    
+    #panels {
+      display: flex;
+    }
+    #panels>div {
+      padding: 0.5rem;
+    }
+  </style>
+  <div id="activity"></div>
+  <h1>remote-meyda</h1>
+  <div id="panels">
+    
+    <div id="optsPanel">
+      <label>
+        Name:
+        <input id="txtSourceName" />
+      </label>
+      <button id="btnPause">Pause</button>
+    </div>
+    <div>
+      <h2>
+        Last data
+      </h2>
+      <div id="lastData"></div>
+    </div>
+   
+  </div>
+ 
+  <h2 id="logTitle">
+    Log
+  </h2>
+  <div id="log">
+    
+  </div>
+  <script type="module" src="script.js"></script>
+  
+</body>
+
+</html>

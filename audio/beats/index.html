@@ -1,24 +1,31 @@
 <!doctype html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>beats</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../base.css">
 </head>
 
 <body>
+<style>
+  .hit {
+    background-color: deeppink;
+  }
+  .target {
+    padding: 1em;
+    border: 1px solid dimgray;
+    display: inline-block;
+  }
+  </style>
+  <div id="activity"></div>
+  <a target="_blank" href="remote.html">remote</a>
   <h1>beats</h1>
-  <div class="target" id="hit">Peak threshold</div>
-  <div id="intervalMs">
-
-  </div>
+  <div class="target" id="pulsed">Peak threshold</div>
+  <div id="intervalMs"></div>
   <div id="intervalBpm"></div>
-  <div id="visualiser"></div>
-  <script src="../util.js"></script>
-  <script src="../visualiser.js"></script>
-  <script src="script.js"></script>
+  <script type="module" src="script.js"></script>
+  
 </body>
 
 </html>

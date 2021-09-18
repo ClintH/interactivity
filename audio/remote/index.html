@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>remote</title>
+  <link rel="stylesheet" href="../base.css">
+</head>
+
+<body>
+  <style>
+    body {
+      height: 100vh;
+    }
+    #lastData,#log {
+      font-family: Menlo, Consolas, Monaco, Liberation Mono, Lucida Console, monospace;
+    }
+    #last>table {
+      border: 1px solid var(--spotL);
+    }
+    #last td {
+      width: 5rem;
+      padding: 0.5rem;
+    }
+    #last.frozen {
+      background-color: lightblue;
+    }
+    h2 {
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      font-size: small;
+    }
+    button {
+      padding: 1rem;
+      margin-top: 0.5rem;
+    }
+
+    .paused {
+      border:2px solid red;
+    }
+    #log {
+      font-size: small;
+      flex: 1;
+      height: 100%;
+      min-height: 5rem;
+      overflow-y: scroll;
+    }
+    #log .error {
+      color: red;
+    }
+    #lastData {
+      word-break: break-all;
+    }
+    
+    #panels {
+      display: flex;
+    }
+    #panels>div {
+      padding: 0.5rem;
+    }
+  </style>
+  <div id="activity"></div>
+  <h1>remote</h1>
+  <div id="panels">
+    
+    <div id="optsPanel">
+      <label>
+        Name:
+        <input id="txtSourceName" />
+      </label>
+      <button id="btnPause">Pause</button>
+      <div>
+        High cut: <span id="lowPassFreqLabel"></span><br />
+        <input type="range" min="20" max="24000" value="24000" id="lowPassFreq">
+      </div>
+      <div>
+        Low cut: <span id="highPassFreqLabel"></span><br />
+        <input type="range" min="1" value="0" max="23000" id="highPassFreq">
+      </div>
+      <div>
+        FFT size: 
+        <select id="fftSize">
+          <option>32</option>
+          <option>256</option>
+          <option selected>1024</option>
+          <option>4096</option>
+          <option>16384</option>
+          <option>32768</option>
+        </select>
+      </div>
+      <div>
+        Smoothing time constant<br />
+        <input type="range" value="50" min="0" max="90" id="smoothingTimeConstant" />
+      </div>
+
+    </div>
+    <div>
+      <h2>
+        Last data
+      </h2>
+      <div id="lastData"></div>
+    </div>
+   
+  </div>
+ 
+  <div id="visualiser"></div>
+  <h2 id="logTitle">
+    Log
+  </h2>
+  <div id="log">
+    
+  </div>
+  <script type="module" src="script.js"></script>
+  
+</body>
+
+</html>
