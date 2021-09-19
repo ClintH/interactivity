@@ -2,8 +2,8 @@ import {Remote} from "https://unpkg.com/@clinth/remote@latest/dist/index.mjs";
 import Plot from "../util/Plot.js"
 import Histogram from "../util/Histogram.js"
 
-const numericalPlots = ['rms','zcr', 'perceptualSpread','spectralCentroid', 'spectralFlatness', 'spectralKurtosis', 'spectralRolloff', 'spectralSkewness', 'spectralSlope', 'spectralSpread'];
-const histoPlots =['loudness','mfcc'];
+const numericalPlots = ['rms', 'zcr', 'perceptualSpread', 'spectralCentroid', 'spectralFlatness', 'spectralKurtosis', 'spectralRolloff', 'spectralSkewness', 'spectralSlope', 'spectralSpread'];
+const histoPlots = ['loudness', 'mfcc'];
 
 const plots = new Map();
 const plotSamples = 100;
@@ -16,12 +16,12 @@ function makePlot(n, isPlot = true) {
   header.innerText = n;
   const canvas = document.createElement('CANVAS');
   canvas.id = n;
-  
+
   const container = document.createElement('DIV');
   container.classList.add('plot');
   container.appendChild(header);
   container.appendChild(canvas);
-  
+
   document.getElementById('plots').appendChild(container);
   if (isPlot)
     plots.set(n, new Plot(canvas, plotSamples));
@@ -32,7 +32,7 @@ function makePlot(n, isPlot = true) {
 let paused = false;
 
 const r = new Remote({
-  ourId:'client'
+  ourId: 'client'
 });
 
 
@@ -54,7 +54,7 @@ r.onData = (d) => {
 
 document.getElementById('btnPause').addEventListener('click', (e) => {
   paused = !paused;
-  for (const [key,value] of plots) {
+  for (const [key, value] of plots) {
     value.paused = paused;
   }
 });

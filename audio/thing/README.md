@@ -1,6 +1,6 @@
-# recent
+# thing
 
-This sketch slightly decouples sound input with response. It also uses the canvas to draw, rather than manipulating DOM elements like the other examples.
+This sketch slightly decouples sound input with response. It also uses the canvas to draw, rather than manipulating DOM elements like the other examples. It uses a generic `remote` to receive processed audio.
 
 In this model, the characteristics of sound affect an object: 'Thing'. Changes are incremental or decremental, allowing a natural fluidity to the response.
 
@@ -18,3 +18,16 @@ If you want to see a more complicated example, see 'particles'
 
 Read more:
 * [Drawing with the Canvas (MDN)](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial)
+
+# Map
+
+index.html: Canvas element and that's about it
+
+script.js: receives and works with processed data
+* Keeps track of amplitude over time, using `SlidingWindow`
+* Keeps track of the averages of each individual frequency bin over time
+* Creates an instance of a 'thing'
+* Runs drawing loop
+* Updates thing based on received data from a remote
+
+Thing.js: it has various properties that are updated by sound, but also behaves on its own accord and is drawn to the canvas

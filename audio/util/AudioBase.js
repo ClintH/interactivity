@@ -1,34 +1,40 @@
 import Visualiser from './Visualiser.js';
 
 export default class AudioBase {
-  
-  constructor(showVis = false) {
+
+  constructor(opts = {}) {
+    if (!opts.showVis) opts.showVis = false;
+    if (!opts.fftSize) opts.fftSize = 1024;
+    if (!opts.smoothingTimeConstant) opts.smoothingTimeConstant = 0.9;
+
+    this.opts = opts;
     this.onData = this.defaultHandler.bind(this);
     this.init();
     this.paused = false;
-  
+
     const visualiserEl = document.getElementById('visualiser');
     if (visualiserEl) {
       const visualiser = new Visualiser(visualiserEl, this);
-      visualiser.setExpanded(showVis);
+      visualiser.setExpanded(opts.showVis);
       this.visualiser = visualiser;
     }
   }
 
   init() {
     // Initalise microphone
-    const getUserMedia = () => { return navigator.mediaDevices.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.mzGetUserMedia
-}
+    const getUserMedia = () => {
+      return navigator.mediaDevices.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.mzGetUserMedia
+    }
     // getUserMedia({ audio: true }, 
     //   this.onMicSuccess.bind(this), 
     //   (error) => this.error(error));
-    navigator.mediaDevices.getUserMedia({ audio: true })
-    .then(stream => {
-      this.onMicSuccess(stream);
-    })
-    .catch (err => {
-      console.error(err);      
-    }) 
+    navigator.mediaDevices.getUserMedia({audio: true})
+      .then(stream => {
+        this.onMicSuccess(stream);
+      })
+      .catch(err => {
+        console.error(err);
+      })
   }
 
   setPaused(v) {
@@ -39,25 +45,25 @@ export default class AudioBase {
       window.requestAnimationFrame(this.analyseLoop.bind(this));
     }
   }
-  
+
   setup(audioCtx, stream) {
     const analyser = audioCtx.createAnalyser();
 
     // fftSize must be a power of 2. Higher values slower, more detailed
     // Range is 32-32768
-    analyser.fftSize = 1024;
+    analyser.fftSize = this.opts.fftSize;
 
     // smoothingTimeConstant ranges from 0.0 to 1.0
     // 0 = no averaging. Fast response, jittery
     // 1 = maximum averaging. Slow response, smooth
-    analyser.smoothingTimeConstant = 0.9;
+    analyser.smoothingTimeConstant = this.opts.smoothingTimeConstant;
 
     // Microphone -> analyser
     const micSource = audioCtx.createMediaStreamSource(stream);
     micSource.connect(analyser);
     return analyser;
   }
-  
+
   // Microphone successfully initalised, now have access to audio data
   onMicSuccess(stream) {
     const audioCtx = new AudioContext();
@@ -68,7 +74,7 @@ export default class AudioBase {
 
     this.audioCtx = audioCtx;
     this.analyser = this.setup(audioCtx, stream);
-    
+
     // Start loop
     window.requestAnimationFrame(this.analyseLoop.bind(this));
   }
@@ -77,30 +83,30 @@ export default class AudioBase {
     const a = this.analyser;
     const bins = analyser.frequencyBinCount;
 
-    let result = { 
+    let result = {
       bins: bins,
       msg: 'Hi, you gotta write a loop function'
     };
-    
+
     return result;
   }
-  
-   analyseLoop() {
+
+  analyseLoop() {
     if (this.paused) {
       console.log('Paused');
       return;
     }
-    
+
     try {
       // Perform analysis
       const result = this.loop(this.analyser);
-    
+
       // Post the outcome of the analysis
       if (result) this.onData(result);
     } catch (e) {
       console.error(e);
     }
-     
+
     // Run again
     window.requestAnimationFrame(this.analyseLoop.bind(this));
   }
@@ -108,9 +114,9 @@ export default class AudioBase {
   visualise(wave, freq) {
     if (!this.visualiser) return;
     this.visualiser.renderWave(wave, true);
-    this.visualiser.renderFreq(freq);  
+    this.visualiser.renderFreq(freq);
   }
-  
+
   // Returns the maximum FFT value within the frequency range.
   getFrequencyRangeMax(lowFreq, highFreq, freqData) {
     const samples = this.sampleData(lowFreq, highFreq, freqData);
@@ -150,11 +156,11 @@ export default class AudioBase {
     const samples = freqData.slice(lowIndex, highIndex);
     return samples;
   }
-  
+
   defaultHandler(d) {
     // noop
   }
-  
+
   // Returns freq for a given index
   getFrequencyAtIndex(index) {
     return index * this.audioCtx.sampleRate / (this.analyser.frequencyBinCount * 2);

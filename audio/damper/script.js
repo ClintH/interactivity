@@ -15,13 +15,13 @@ waveDamper.recall();
 // Wire up buttons
 document.getElementById('btnStart').addEventListener('click', () => {
   // Start sampling after a moment to avoid capturing lingering sound from physical click
-  setTimeout(() => { 
-    freqDamper.startSampling(4000); 
-    waveDamper.startSampling(4000); 
+  setTimeout(() => {
+    freqDamper.startSampling(4000);
+    waveDamper.startSampling(4000);
   }, 200);
 });
-document.getElementById('btnReset').addEventListener('click', () => { 
-  freqDamper.reset(); 
+document.getElementById('btnReset').addEventListener('click', () => {
+  freqDamper.reset();
   waveDamper.reset();
   freqDamper.save();
   waveDamper.save();
@@ -37,18 +37,18 @@ if (visualiserEl) {
 function visualise(wave, freq) {
   if (!visualiser) return;
   visualiser.renderWave(wave, true);
-  visualiser.renderFreq(freq);  
+  visualiser.renderFreq(freq);
 }
 
 const r = new Remote({
-  ourId:'damper'
+  ourId: 'damper'
 });
 
 // When data is received from the Remote, do something with it...
 r.onData = (d) => {
   let freq = d.freq;
   let wave = d.wave;
-  
+
   // Pass it through the dampening logic
   freq = freqDamper.push(freq);
 
@@ -61,7 +61,7 @@ r.onData = (d) => {
 
   // Show the recorded average:
   //visualise(waveDamper.getDamper(), freqDamper.getDamper());
-  
+
   // Or alternatively, show the dampened value
   visualise(wave, freq);
 }

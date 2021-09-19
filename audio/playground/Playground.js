@@ -1,10 +1,10 @@
 import AudioBase from '../util/AudioBase.js';
 
 export default class Playground extends AudioBase {
-  constructor(showVis)  {
-    super(showVis);
+  constructor(opts) {
+    super(opts);
   }
-  
+
   setup(audioCtx, stream) {
     console.log('Playground analyser setup');
     const analyser = audioCtx.createAnalyser();
@@ -33,24 +33,24 @@ export default class Playground extends AudioBase {
     micSource.connect(lowPassFilter);
     lowPassFilter.connect(highPassFilter);
     highPassFilter.connect(analyser);
-    
+
     this.lowPassFilter = lowPassFilter;
     this.highPassFilter = highPassFilter;
     return analyser;
   }
-  
+
   loop(analyser) {
     const a = this.analyser;
     const bins = analyser.frequencyBinCount;
 
-    let result = { };
-    
+    let result = {};
+
     // Get frequency and amplitude data
     const freq = new Float32Array(bins);
     const wave = new Float32Array(bins);
     a.getFloatFrequencyData(freq);
     a.getFloatTimeDomainData(wave);
-    
+
     // Visualise
     this.visualise(wave, freq);
     return result;

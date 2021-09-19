@@ -1,6 +1,6 @@
 import Playground from './Playground.js';
 
-const a = new Playground(true /* showVis */);
+const a = new Playground({showVis: true});
 
 document.getElementById('lowPassFreq').addEventListener('input', (e) => {
   let value = parseInt(e.target.value);
