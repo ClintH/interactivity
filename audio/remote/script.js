@@ -3,13 +3,11 @@
 
 import {Remote} from "https://unpkg.com/@clinth/remote@latest/dist/index.mjs";
 
-import Visualiser from '../util/Visualiser.js';
 import Audio from './Audio.js';
 
 const r = new Remote({
-  remote:true, // true because we're likely running on a mobile device
-  useSockets:true,
-  useBroadcastChannel:false
+  useSockets: true,
+  useBroadcastChannel: true
 });
 
 // Hack in Audio.js to change data processing

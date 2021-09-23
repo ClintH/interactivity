@@ -3,12 +3,9 @@
 
 import {Remote} from "https://unpkg.com/@clinth/remote@latest/dist/index.mjs";
 
-import Visualiser from '../util/Visualiser.js';
 import Threshold from './Threshold.js';
 
-const r = new Remote({
-  remote:true // true because we're likely running on a mobile device
-});
+const r = new Remote();
 
 // Hack in Threshold.js to change data processing
 const a = new Threshold();
